@@ -1,35 +1,58 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [donationRequests, setDonationRequests] = useState([]);
+
+  useEffect(() => {
+    const fetchedRequests = [
+      { id: 1, category: 'Food', description: 'Urgent need for food donations' },
+      { id: 2, category: 'Clothing', description: 'Clothing donations for refugees' },
+      { id: 3, category: 'Medical', description: 'Medical supplies urgently needed' },
+    ];
+    setDonationRequests(fetchedRequests);
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <header>
+        <h1>NGO Dashboard</h1>
+      </header>
+      <main>
+        <section className="statistics">
+          <div>
+            <h2>Donors</h2>
+            <p>Total Donors: {count}</p>
+            <button onClick={() => setCount(count + 1)}>Add Donor</button>
+          </div>
+        </section>
+        
+        {/* Donation Requests Section */}
+        <section className="donation-request">
+          <h2>Donation Requests</h2>
+          {donationRequests.length > 0 ? (
+            <ul>
+              {donationRequests.map((request) => (
+                <li key={request.id}>
+                  <h3>{request.category}</h3>
+                  <p>{request.description}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No donation requests found.</p>
+          )}
+        </section>
+      </main>
+      <footer>
+        <p>Click on logos to learn more about Vite and React!</p>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;
+    
