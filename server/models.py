@@ -60,9 +60,11 @@ class Donation_request(db.Model, SerializerMixin):
     # Relationships
     organization = db.relationship('Organizations', back_populates='donation_requests')
     category = db.relationship('Categories', back_populates='donation_requests')
-    
+    donations = db.relationship('Donations', back_populates='donation_request', cascade='all, delete-orphan')  # New relationship
+
     # Serialize rules
-    serialize_rules = ('-organization', '-category')
+    serialize_rules = ('-organization', '-category', '-donations')
+
 
 
 class Categories(db.Model, SerializerMixin):
@@ -89,13 +91,16 @@ class Donations(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False)
-    
+    donation_request_id = db.Column(db.Integer, db.ForeignKey('donation_requests.request_id'), nullable=False)  # New foreign key
+
     # Relationships
     user = db.relationship('Users', back_populates='donations')
-    category = db.relationship('Categories', back_populates='donations')  # Updated relationship
+    category = db.relationship('Categories', back_populates='donations')
+    donation_request = db.relationship('Donation_request', back_populates='donations')  # New relationship
     
     # Serialize rules
-    serialize_rules = ('-user', '-category')
+    serialize_rules = ('-user', '-category', '-donation_request')
+
 
 
 class Reports(db.Model, SerializerMixin):
