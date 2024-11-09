@@ -1,18 +1,20 @@
-import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import NavBar from "./components/AdminNavbar";
-import HomePage from "./adminPages/Homepage";
-import Categories from "./adminPages/categories";
+import React from 'react';
+import './Admin/styles/dashboard.css';
 
-function App() {
-  return (
-    <Router>
-          <Routes>
-            <Route path="/adminhome" element={<HomePage />} />
-            <Route path="/categories" element={<Categories />} />
-          </Routes>
-    </Router>
-  );
-}
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import AdminDashboard from './Admin/pages/AdminDashboard'; // Corrected to include the `Admin` folder
+
+
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/" element={<Navigate to="/admin" replace />} />
+    </Routes>
+  </Router>
+);
 
 export default App;
+
+
+
