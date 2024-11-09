@@ -1,13 +1,13 @@
 from flask_restful import Resource, reqparse
 from models import Categories, db
 from flask import request
-
+from Resources.roles import admin_required
 
 class CategoryResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, help='Name of the category is required')
     parser.add_argument('description', type=str, required=True, help='Description of the category is required')
-    
+    @admin_required
     def get(self, id=None):
         #if id is not provided, fetch all the categories
         if id is None:
@@ -21,6 +21,7 @@ class CategoryResource(Resource):
                 'message': "Category not found"
             }, 404
         return category.to_dict(), 200 #return the serilaized category
+    @admin_required
     def post(self):
         data = self.parser.parse_args()
         
@@ -32,6 +33,7 @@ class CategoryResource(Resource):
         except Exception as e:
             db.session.rollback()
             return{'message': "error creating the category","error": str(e)}, 500
+    @admin_required
     def patch(self, id):
         data = self.parser.parse_args()
         category = Categories.query.filter_by(category_id = id).first()
@@ -57,7 +59,7 @@ class CategoryResource(Resource):
         except Exception as e:
             db.session.rollback()
             return {"message": "an erro occurred updating the category","error": str(e)},500
-        
+    @admin_required    
     def delete(self, id):
         
         category = Categories.query.filter_by(category_id = id).first()

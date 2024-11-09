@@ -1,28 +1,29 @@
 from models import db, Donation_request, Organizations
 from flask_restful import Resource, reqparse
 from flask import request
+from Resources.roles import admin_required, ngo_required
 
 
 
 class DonationRequestResource(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('title', type=str, help = 'title of the donation is required')
-    parser.add_argument('description', type=str, help = 'description of the donation is required')
-    parser.add_argument('status', type=str, help = 'status of the donation is required')
-    parser.add_argument('target_amount', type=float, help = 'amount of the donation is required')
-    parser.add_argument('organization_id', type=int, help='organization_id of the request is required')
+    parser.add_argument('title', type=str,required=True, help = 'title of the donation is required')
+    parser.add_argument('description', type=str,required=True, help = 'description of the donation is required')
+    parser.add_argument('status', type=str,required=True, help = 'status of the donation is required')
+    parser.add_argument('target_amount', type=float,required=True, help = 'amount of the donation is required')
+    parser.add_argument('organization_id', type=int,required=True, help='organization_id of the request is required')
     parser.add_argument('category_id', type=int, required=True, help = 'category_id of the request is required')
-    
-    
+    @ngo_required
+    @admin_required
     def get(self, id=None):
         if id is None:
             all_requests = Donation_request.query.all()
             return [request.to_dict() for request in all_requests], 200
-        request = Donation_request.query.filter_by(request_id=id)
-        if request.first() is None:
+        request = Donation_request.query.filter_by(request_id=id).first()
+        if request is None:
             return {'message': 'Request not found'}, 404
-        return request.first().to_dict(), 200
-    
+        return request.to_dict(), 200
+    @ngo_required
     def post(self):
         data = self.parser.parse_args()
         
@@ -42,7 +43,7 @@ class DonationRequestResource(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': "error creating the category", "error": str(e)}, 500
-        
+    @ngo_required   
     def patch(self, id):
         data = self.parser.parse_args()
         
@@ -105,7 +106,7 @@ class DonationRequestResource(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': "error updating the donation_request", "error": str(e)}, 500
-        
+    @ngo_required    
     def delete(self, id):
         request = Donation_request.query.filter_by(request_id=id).first()
         

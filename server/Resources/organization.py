@@ -4,9 +4,9 @@ from flask import request
 
 class OrganizationResource(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('name', type=str, help = 'Name of the organization is required')
-    parser.add_argument('description', type=str, help = 'Description of the organization is required')
-    parser.add_argument('address', type=str, help = 'Address of the organization is required')
+    parser.add_argument('name', type=str,required = True, help = 'Name of the organization is required')
+    parser.add_argument('description', type=str, required=True, help = 'Description of the organization is required')
+    parser.add_argument('address', type=str,required = True, help = 'Address of the organization is required')
     
     def get(self, id=None):
         if id is None:
@@ -86,7 +86,7 @@ class OrganizationResource(Resource):
                     "organization": organization.to_dict()
                 }, 200
             else:
-                return {"message": "No changes were made to the organization"}, 200
+                return {"message": "No changes were made to the organization"}, 204
         except Exception as e:
             db.session.rollback()
             return {"message": f"Error updating the organization: {e}"}, 500
