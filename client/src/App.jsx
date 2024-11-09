@@ -7,6 +7,8 @@ import Auth from './components/Auth';
 import Dashboard from './components/Dashboard'; // Import the new Dashboard component
 import ManageDonations from './components/ManageDonations'; // Import the new ManageDonations component
 import './App.css';
+import './Admin/styles/dashboard.css';
+
 
 
 const App = () => {
@@ -96,6 +98,8 @@ const App = () => {
         </nav>
 
         <Routes>
+      <Route path="/admin" element={<AdminDashboard />} />
+          
           <Route path="/" element={<HomePage />} />
           <Route path="/find-donations" element={<FindDonations />} />
           <Route path="/about" element={<AboutUs />} />
@@ -110,3 +114,4 @@ const App = () => {
 };
 
 export default App;
+
