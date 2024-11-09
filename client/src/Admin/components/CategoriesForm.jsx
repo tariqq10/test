@@ -2,7 +2,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast"
 
-const categoriesForm = () => {
+const CategoriesForm = () => {
 
     const formik = useFormik({
         validationSchema: Yup.object().shape({
@@ -23,7 +23,7 @@ const categoriesForm = () => {
              headers: {
                 "Content-Type": "application/json",
              },
-             body: JSON.stringify()  
+             body: JSON.stringify(values)  
             });
 
             const data = await res.json();
@@ -73,4 +73,4 @@ const categoriesForm = () => {
         
     )
 }
-export default categoriesForm
+export default CategoriesForm

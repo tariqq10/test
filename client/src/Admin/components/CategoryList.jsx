@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react"
+import CategoryItem from "./CategoryItem"
+
+
 
 const CategoriesList = () => {
     const [categories, setCategories] = useState([])
@@ -22,10 +25,10 @@ const CategoriesList = () => {
         <div>
             {categories.length > 0 ? (
                 category.map((category) => (
-                <CategoriesItem key={category.id} {...category}/>
+                <CategoryItem key={category.id} {...category}/>
                 ))
             ) : (
-                <p>No categories</p>
+                <p>No categories Available</p>
             )}
         </div>
     )
