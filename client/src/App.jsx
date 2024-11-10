@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard'; // Import the new Dashboard comp
 import ManageDonations from './components/ManageDonations'; // Import the new ManageDonations component
 import './App.css';
 import './Admin/styles/dashboard.css';
+import AdminDashboard from './Admin/pages/AdminDashboard'
 
 
 
