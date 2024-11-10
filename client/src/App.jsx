@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import FindDonations from './components/FindDonations';
@@ -6,13 +9,23 @@ import AboutUs from './components/AboutUs';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard'; // Import the new Dashboard component
 import ManageDonations from './components/ManageDonations'; // Import the new ManageDonations component
-import './App.css';
 import './Admin/styles/dashboard.css';
 import AdminDashboard from './Admin/pages/AdminDashboard'
 
-
-
 const App = () => {
+    const [count, setCount] = useState(0);
+  const [donationRequests, setDonationRequests] = useState([]);
+
+  useEffect(() => {
+    const fetchedRequests = [
+      { id: 1, category: 'Food', description: 'Urgent need for food donations' },
+      { id: 2, category: 'Clothing', description: 'Clothing donations for refugees' },
+      { id: 3, category: 'Medical', description: 'Medical supplies urgently needed' },
+    ];
+    setDonationRequests(fetchedRequests);
+  }, []);
+  
+  
   useEffect(() => {
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -111,6 +124,43 @@ const App = () => {
         </Routes>
       </div>
     </Router>
+  );
+
+  return (
+    <div className="App">
+      <header>
+        <h1>NGO Dashboard</h1>
+      </header>
+      <main>
+        <section className="statistics">
+          <div>
+            <h2>Donors</h2>
+            <p>Total Donors: {count}</p>
+            <button onClick={() => setCount(count + 1)}>Add Donor</button>
+          </div>
+        </section>
+        
+        {/* Donation Requests Section */}
+        <section className="donation-request">
+          <h2>Donation Requests</h2>
+          {donationRequests.length > 0 ? (
+            <ul>
+              {donationRequests.map((request) => (
+                <li key={request.id}>
+                  <h3>{request.category}</h3>
+                  <p>{request.description}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No donation requests found.</p>
+          )}
+        </section>
+      </main>
+      <footer>
+        <p>Click on logos to learn more about Vite and React!</p>
+      </footer>
+    </div>
   );
 };
 
