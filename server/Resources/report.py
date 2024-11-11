@@ -9,21 +9,30 @@ class ReportResource(Resource):
     @jwt_required()
     def get(self):
         """
-        Get summarized report including:
-        - Total donations
-        - Total pending donations
+        Generate a summarized report including:
+        - Total donations amount
+        - Total pending donation requests count
+        - Total approved donation requests count
         - Donations by category
         - Remaining donations to meet target for each donation request
+        - List of all donation requests
+        - List of approved donation requests
+        - Count of pending donation requests
         """
         try:
             # Total donations amount
             total_donations = db.session.query(func.sum(Donations.amount)).scalar() or 0.0
 
-            # Total pending donations (those without 'approved' status)
-            pending_donations = db.session.query(func.sum(Donations.amount)) \
-                .join(Donation_request, Donation_request.request_id == Donations.donation_request_id) \
-                .filter(Donation_request.status != 'approved') \
-                .scalar() or 0.0
+            # Count of total donation requests
+            total_donation_requests = db.session.query(func.count(Donation_request.request_id)).scalar()
+
+            # Count of approved donation requests
+            total_approved_requests = db.session.query(func.count(Donation_request.request_id)) \
+                .filter(Donation_request.status == 'approved').scalar()
+
+            # Count of pending donation requests
+            total_pending_requests = db.session.query(func.count(Donation_request.request_id)) \
+                .filter(Donation_request.status == 'pending').scalar()
 
             # Donations by category
             donations_by_category = db.session.query(
@@ -56,18 +65,52 @@ class ReportResource(Resource):
                 for request_id, target_amount, donated_amount, remaining_amount in remaining_donations
             ]
 
+            # All donation requests
+            all_donation_requests = db.session.query(
+                Donation_request.request_id,
+                Donation_request.title,
+                Donation_request.description,
+                Donation_request.status,
+                Donation_request.target_amount,
+                func.coalesce(func.sum(Donations.amount), 0).label("donated_amount")
+            ).outerjoin(Donations, Donations.donation_request_id == Donation_request.request_id) \
+             .group_by(Donation_request.request_id) \
+             .all()
+
+            all_donation_requests_dict = [
+                {
+                    "request_id": request_id,
+                    "title": title,
+                    "description": description,
+                    "status": status,
+                    "target_amount": target_amount,
+                    "donated_amount": donated_amount
+                }
+                for request_id, title, description, status, target_amount, donated_amount in all_donation_requests
+            ]
+
+            # Approved donation requests
+            approved_donation_requests = [
+                request for request in all_donation_requests_dict if request["status"] == "approved"
+            ]
+
             # Prepare the report data
             report_data = {
                 "total_donations": total_donations,
-                "pending_donations": pending_donations,
+                "total_pending_requests": total_pending_requests,
+                "total_approved_requests": total_approved_requests,
+                "total_donation_requests": total_donation_requests,
                 "donations_by_category": donations_by_category_dict,
-                "remaining_donations": remaining_donations_dict
+                "remaining_donations": remaining_donations_dict,
+                "all_donation_requests": all_donation_requests_dict,
+                "approved_donation_requests": approved_donation_requests
             }
 
-            # Optional: Save the report for a specific date
+            # Save the report entry
             report_entry = Reports(
                 total_donations=total_donations,
-                pending_donations=pending_donations,
+                total_pending_requests=total_pending_requests,
+                total_approved_requests=total_approved_requests,
                 report_date=datetime.now()
             )
             db.session.add(report_entry)
