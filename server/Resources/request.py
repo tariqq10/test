@@ -5,18 +5,15 @@ from Resources.roles import admin_required, ngo_required
 from flask_jwt_extended import get_jwt_identity
 from Resources.category import CategoryResource
 
-
-
 class DonationRequestResource(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('title', type=str,required=True, help = 'title of the donation is required')
-    parser.add_argument('description', type=str,required=True, help = 'description of the donation is required')
-    parser.add_argument('status', type=str,required=True, help = 'status of the donation is required')
-    parser.add_argument('target_amount', type=float,required=True, help = 'amount of the donation is required')
- 
-    parser.add_argument('category_name', type=str, required=True, help = 'category_name of the request is required')
-    @ngo_required
-    @admin_required
+    parser.add_argument('title', type=str, required=True, help='title of the donation is required')
+    parser.add_argument('description', type=str, required=True, help='description of the donation is required')
+    parser.add_argument('status', type=str, required=True, help='status of the donation is required')
+    parser.add_argument('target_amount', type=float, required=True, help='amount of the donation is required')
+    parser.add_argument('category_name', type=str, required=True, help='category_name of the request is required')
+
+    
     def get(self, id=None):
         if id is None:
             all_requests = Donation_request.query.all()
@@ -25,49 +22,52 @@ class DonationRequestResource(Resource):
         if request is None:
             return {'message': 'Request not found'}, 404
         return request.to_dict(), 200
-    
-    
-    
+
     @ngo_required
     def post(self):
         data = self.parser.parse_args()
 
         # Get the logged-in user's ID
         user_id = get_jwt_identity()
-        
+
         # Fetch the user to get their organization_id
         user = Users.query.filter_by(user_id=user_id).first()
         if not user or not user.organization_id:
             return {'message': 'User is not associated with any organization.'}, 400
+
+        # Get the category name from the parsed arguments
+        category_name = data.pop('category_name')  # Remove category_name from data dict
         
-        # Set the organization_id for the donation request
-        data['organization_id'] = user.organization_id
-        
-        
-        #get category name from request data and find the corresponding category_id
-        category_name = request.json.get('category_name')
+        # Find the corresponding category
         category = Categories.query.filter_by(name=category_name).first()
         if not category:
             return {'message': 'Invalid category selected'}, 400
-        
-        #populate the catgory_id in data
-        data['category_id'] = category.category_id
+
+        # Create the donation request data dictionary
+        donation_data = {
+            'title': data['title'],
+            'description': data['description'],
+            'status': data['status'],
+            'target_amount': data['target_amount'],
+            'organization_id': user.organization_id,
+            'category_id': category.category_id
+        }
 
         try:
             # Check if a similar donation request already exists
             existing_request = Donation_request.query.filter_by(
-                title=data['title'],
-                description=data['description'],
-                target_amount=data['target_amount'],
-                organization_id=data['organization_id'],
-                category_id=data['category_id']
+                title=donation_data['title'],
+                description=donation_data['description'],
+                target_amount=donation_data['target_amount'],
+                organization_id=donation_data['organization_id'],
+                category_id=donation_data['category_id']
             ).first()
 
             if existing_request:
                 return {'message': 'Donation request already exists'}, 400
 
             # Create a new donation request
-            donation_request = Donation_request(**data)
+            donation_request = Donation_request(**donation_data)
             db.session.add(donation_request)
             db.session.commit()
             return donation_request.to_dict(), 201
@@ -75,11 +75,6 @@ class DonationRequestResource(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': "Error creating the donation request", "error": str(e)}, 500
-        
-        
-        
-        
-        
         
         
     @ngo_required   

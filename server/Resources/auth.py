@@ -161,3 +161,5 @@ class AdminOnlyResource(Resource):
             return {'message': 'Welcome, admin! You have access to this resource.'}, 200
         else:
             return {'message': 'Access denied. Admins only.'}, 403  # Forbidden if not admin
+        
+# class LogoutResource(Resource):
