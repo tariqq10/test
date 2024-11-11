@@ -40,12 +40,12 @@ const HomePage = () => {
     <div className="home-page">
       {/* New Navigation Bar for Managing Donations */}
       <nav className="donation-management-nav">
-        <ul>
+        {/* <ul>
           <li><Link to="/manage-donations/overview">Overview</Link></li>
           <li><Link to="/manage-donations/add-project">Manage Donations</Link></li>
           <li><Link to="/manage-donations/donors">View Donors</Link></li>
-          <li><Link to="/manage-donations/reports">Reports</Link></li>
-        </ul>
+          <li><Link to="/manage-donations/reports">Reports</Link></li> */}
+        {/* </ul> */}
       </nav>
 
       {/* Welcome Section */}
