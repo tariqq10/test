@@ -33,8 +33,7 @@ class DonationApprovalResource(Resource):
             db.session.rollback()
             return {'message': 'Error approving the donation request', 'error': str(e)}, 500
         
-    @admin_required   
-    @donor_required
+   
     def get(self):
         '''
         get the list of approved donation request for the donor.

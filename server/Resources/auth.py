@@ -1,8 +1,9 @@
 from flask import request
 from flask_restful import Resource, reqparse
-from models import db, Users
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from models import db, Users, Organizations
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from flask_bcrypt import generate_password_hash, check_password_hash
+from Resources.roles import admin_required
 
 
 class UserResource(Resource):
@@ -15,10 +16,15 @@ class UserResource(Resource):
     parser.add_argument('password', type=str, required=True, help='password is required')
     parser.add_argument('confirm_password', type=str, required=True, help='confirm_password is required')
     
+    # Organization-specific fields for NGO role
+    parser.add_argument('organization_name', type=str, required=False, help='Organization name (required for NGO role)')
+    parser.add_argument('organization_description', type=str, required=False, help='Organization description (required for NGO role)')
+    parser.add_argument('organization_address', type=str, required=False, help='Organization address (required for NGO role)')
+
     def post(self):
         data = self.parser.parse_args()
 
-        # 1. Verify the phone, password, and email if they are unique
+        # 1. Verify phone and email uniqueness
         existing_number = Users.query.filter_by(phone=data['phone']).first()
         if existing_number:
             return {'message': 'Phone number already exists'}, 422
@@ -27,40 +33,95 @@ class UserResource(Resource):
         if existing_email:
             return {'message': 'Email already exists'}, 422
         
-        # 2. Verify the password and confirm password match
+        # 2. Check if passwords match
         if data['password'] != data['confirm_password']:
             return {'message': 'Passwords do not match'}, 422
         
-        # 3. Hash the password
+        # 3. Hash password
         hashed_password = generate_password_hash(data['password']).decode('utf8')
 
-        # 4. Only allow setting 'admin' role if the user is an existing admin (optional)
-        # Check if an admin user is creating a new user and if the 'admin' role is being set
-        if data['role'] == 'admin':
-            # Add additional logic to check if the request comes from an admin user (Optional)
-            current_user_id = get_jwt_identity()  # Get the ID of the logged-in user (admin)
-            current_user = Users.query.get(current_user_id)
-            if current_user is None or current_user.role != 'admin':
-                return {'message': 'Only admins can assign admin roles'}, 403
+        # 4. Handle NGO Role (Create the organization and link it to the user)
+        if data['role'] == 'ngo':
+            # Ensure NGO organization details are provided
+            if not data.get('organization_name') or not data.get('organization_description') or not data.get('organization_address'):
+                return {'message': 'Organization details are required for NGO role'}, 400
 
-        # Save the user to the database
-        user = Users(first_name=data['first_name'], 
-                     last_name=data['last_name'], 
-                     email=data['email'], 
-                     phone=data['phone'],
-                     role=data['role'], 
-                     password=hashed_password)
+            # Create the organization
+            organization = Organizations(
+                name=data['organization_name'],
+                description=data['organization_description'],
+                address=data['organization_address'],
+                is_approved=False  # Assuming approval happens later
+            )
+            
+            # Add the organization to the session
+            db.session.add(organization)
+            db.session.commit()  # Commit to get organization ID
+            
+            # Create the user and associate it with the new organization
+            user = Users(
+                first_name=data['first_name'],
+                last_name=data['last_name'],
+                email=data['email'],
+                phone=data['phone'],
+                role=data['role'],
+                password=hashed_password,
+                organization_id=organization.organization_id  # Link to the newly created organization
+            )
+        
+        else:
+            # For non-NGO users (admin, donor, etc.), no organization linking needed
+            user = Users(
+                first_name=data['first_name'],
+                last_name=data['last_name'],
+                email=data['email'],
+                phone=data['phone'],
+                role=data['role'],
+                password=hashed_password
+            )
+        
+        # Add the user to the database
         db.session.add(user)
         db.session.commit()
-        
-        # Generate access token
+
+        # Generate JWT token for the new user
         access_token = create_access_token(identity=user.user_id)
-        
+
         return {
             'access_token': access_token,
             'user': user.to_dict(),
             'message': 'User created successfully'
         }, 201
+        
+    @admin_required  # ensure that only admins can delete users
+    @jwt_required()
+    def delete(self, user_id):
+        # get the ID of the logged-in user (admin)
+        current_user_id = get_jwt_identity()
+        current_user = Users.query.get(current_user_id)
+        
+        # make sure that the logged-in user is an admin
+        if current_user.role != 'admin':
+            return {"message": 'Only admins can delete user'}
+        
+        user_to_delete = Users.query.get(user_id)
+        
+        if not user_to_delete:
+            return {'message': "User not found"}
+        
+        # prevent the admin from deleting themselves
+        if user_to_delete.user_id == current_user_id:
+            return {'message': 'You cannot delete your own account'}, 400
+        
+        try:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            return {'message': 'User deleted successfully', 
+                    'user': user_to_delete.to_dict()
+                    }, 200
+        except Exception as e:
+            db.session.rollback()
+            return {'message': 'Error deleting user', 'error': str(e)}, 500        
 
 
 class LoginResource(Resource):

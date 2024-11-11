@@ -1,7 +1,9 @@
-from models import db, Donation_request, Organizations
+from models import db, Donation_request, Organizations, Users, Categories
 from flask_restful import Resource, reqparse
 from flask import request
 from Resources.roles import admin_required, ngo_required
+from flask_jwt_extended import get_jwt_identity
+from Resources.category import CategoryResource
 
 
 
@@ -11,8 +13,8 @@ class DonationRequestResource(Resource):
     parser.add_argument('description', type=str,required=True, help = 'description of the donation is required')
     parser.add_argument('status', type=str,required=True, help = 'status of the donation is required')
     parser.add_argument('target_amount', type=float,required=True, help = 'amount of the donation is required')
-    parser.add_argument('organization_id', type=int,required=True, help='organization_id of the request is required')
-    parser.add_argument('category_id', type=int, required=True, help = 'category_id of the request is required')
+ 
+    parser.add_argument('category_name', type=str, required=True, help = 'category_name of the request is required')
     @ngo_required
     @admin_required
     def get(self, id=None):
@@ -23,26 +25,63 @@ class DonationRequestResource(Resource):
         if request is None:
             return {'message': 'Request not found'}, 404
         return request.to_dict(), 200
+    
+    
+    
     @ngo_required
     def post(self):
         data = self.parser.parse_args()
+
+        # Get the logged-in user's ID
+        user_id = get_jwt_identity()
         
-        try: 
-            #create a new donation request
+        # Fetch the user to get their organization_id
+        user = Users.query.filter_by(user_id=user_id).first()
+        if not user or not user.organization_id:
+            return {'message': 'User is not associated with any organization.'}, 400
+        
+        # Set the organization_id for the donation request
+        data['organization_id'] = user.organization_id
+        
+        
+        #get category name from request data and find the corresponding category_id
+        category_name = request.json.get('category_name')
+        category = Categories.query.filter_by(name=category_name).first()
+        if not category:
+            return {'message': 'Invalid category selected'}, 400
+        
+        #populate the catgory_id in data
+        data['category_id'] = category.category_id
+
+        try:
+            # Check if a similar donation request already exists
+            existing_request = Donation_request.query.filter_by(
+                title=data['title'],
+                description=data['description'],
+                target_amount=data['target_amount'],
+                organization_id=data['organization_id'],
+                category_id=data['category_id']
+            ).first()
+
+            if existing_request:
+                return {'message': 'Donation request already exists'}, 400
+
+            # Create a new donation request
             donation_request = Donation_request(**data)
-            
-            
-            #fetch the donation request from the database to check if the donation request being posted already exists
-            donation_requests = Donation_request.query.all()
-            for request in donation_requests:
-                if request.title == data['title'] and request.description == data['description'] and request.target_amount == data['target_amount'] and request.organization_id == data['organization_id'] and request.category_id == data['category_id']:
-                    return {'message': 'Donation request already exists'}, 400
             db.session.add(donation_request)
             db.session.commit()
             return donation_request.to_dict(), 201
+
         except Exception as e:
             db.session.rollback()
-            return {'message': "error creating the category", "error": str(e)}, 500
+            return {'message': "Error creating the donation request", "error": str(e)}, 500
+        
+        
+        
+        
+        
+        
+        
     @ngo_required   
     def patch(self, id):
         data = self.parser.parse_args()
