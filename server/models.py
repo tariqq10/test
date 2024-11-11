@@ -22,7 +22,7 @@ class Users(db.Model, SerializerMixin):
     organization_id = db.Column(db.Integer, db.ForeignKey('organizations.organization_id'), unique=True)
     
     # Relationships
-    organization = db.relationship('Organizations', back_populates='user', uselist=False)
+    organization = db.relationship('Organizations', back_populates='user', uselist=False, cascade="all, delete-orphan")
     donations = db.relationship('Donations', back_populates='user', cascade='all, delete-orphan')
     
     # Serialize rules
@@ -39,8 +39,8 @@ class Organizations(db.Model, SerializerMixin):
     address = db.Column(db.String(50), nullable=False)
     
     # Relationships
-    user = db.relationship('Users', back_populates='organization')
-    donation_requests = db.relationship('Donation_request', back_populates='organization')
+    user = db.relationship('Users', back_populates='organization', cascade = "all, delete-orphan")
+    donation_requests = db.relationship('Donation_request', back_populates='organization', cascade="all, delete-orphan")
     
     # Serialize rules
     serialize_rules = ('-user', '-donation_requests')
@@ -60,11 +60,15 @@ class Donation_request(db.Model, SerializerMixin):
     # Relationships
     organization = db.relationship('Organizations', back_populates='donation_requests')
     category = db.relationship('Categories', back_populates='donation_requests')
-    donations = db.relationship('Donations', back_populates='donation_request', cascade='all, delete-orphan')  # New relationship
-
+    donations = db.relationship('Donations', back_populates='donation_request', cascade='all, delete-orphan')  # New relationship with Donations
+    
     # Serialize rules
     serialize_rules = ('-organization', '-category', '-donations')
 
+    # Adding category_name as a property to retrieve it from related Categories model
+    @property
+    def category_name(self):
+        return self.category.name if self.category else None
 
 
 class Categories(db.Model, SerializerMixin):
@@ -91,16 +95,15 @@ class Donations(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'), nullable=False)
-    donation_request_id = db.Column(db.Integer, db.ForeignKey('donation_requests.request_id'), nullable=False)  # New foreign key
-
+    donation_request_id = db.Column(db.Integer, db.ForeignKey('donation_requests.request_id'))  # Foreign key to Donation_request
+    
     # Relationships
     user = db.relationship('Users', back_populates='donations')
     category = db.relationship('Categories', back_populates='donations')
-    donation_request = db.relationship('Donation_request', back_populates='donations')  # New relationship
+    donation_request = db.relationship('Donation_request', back_populates='donations')  # New relationship with Donation_request
     
     # Serialize rules
     serialize_rules = ('-user', '-category', '-donation_request')
-
 
 
 class Reports(db.Model, SerializerMixin):
