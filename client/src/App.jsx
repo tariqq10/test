@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import FindDonations from './components/FindDonations';
-import AboutUs from './components/AboutUs';
-import Auth from './components/Auth';
-import Dashboard from './components/Dashboard'; // Import the new Dashboard component
-import ManageDonations from './components/ManageDonations'; // Import the new ManageDonations component
+import HomePage from './Default/components/HomePage';
+import FindDonations from './Default/components/FindDonations';
+import AboutUs from './Default/components/AboutUs';
+import Auth from './Default/components/Auth';
+import ManageDonations from './Default/components/ManageDonations'; // Import the new ManageDonations component
 import './Admin/styles/dashboard.css';
-import AdminDashboard from './Admin/pages/AdminDashboard'
+import Login from './Default/components/Login';
+import AdminNavBar from './Admin/components/AdminNavBar';
 
 const App = () => {
     const [count, setCount] = useState(0);
@@ -95,73 +95,92 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <div className="app">
-        <canvas id="canvas" />
+    // <div>
+    //   <header>
+    //     <h1>NGO Dashboard</h1>
+    //   </header>
+    //   <main>
+    //     <section className="statistics">
+    //       <div>
+    //         <h2>Donors</h2>
+    //         <p>Total Donors: {count}</p>
+    //         <button onClick={() => setCount(count + 1)}>Add Donor</button>
+    //       </div>
+    //     </section>
 
-        <nav>
-          <ul>
-            <li><Link to="/" aria-label="Home"><i className="fas fa-home"></i> Home</Link></li>
-            <li><Link to="/about" aria-label="About Us"><i className="fas fa-info-circle"></i> About Us</Link></li>
-            <li><Link to="/register" aria-label="Register"><i className="fas fa-user-plus"></i> Register</Link></li>
-            <li><Link to="/login" aria-label="Login"><i className="fas fa-sign-in-alt"></i> Login</Link></li>
-            <li><Link to="/find-donations" aria-label="Find Donations"><i className="fas fa-search"></i> Find Donations</Link></li>
-            <li><Link to="/dashboard" aria-label="Dashboard"><i className="fas fa-tachometer-alt"></i> Dashboard</Link></li>
-            <li><Link to="/manage-donations" aria-label="Manage Donations"><i className="fas fa-cogs"></i> Manage Donations</Link></li> {/* New link */}
-          </ul>
-        </nav>
+    //     {/* Donation Requests Section */}
+    //     <section className="donation-request">
+    //       <h2>Donation Requests</h2>
+    //       {donationRequests.length > 0 ? (
+    //         <ul>
+    //           {donationRequests.map((request) => (
+    //             <li key={request.id}>
+    //               <h3>{request.category}</h3>
+    //               <p>{request.description}</p>
+    //             </li>
+    //           ))}
+    //         </ul>
+    //       ) : (
+    //         <p>No donation requests found.</p>
+    //       )}
+    //     </section>
+    //   </main>
+    //   <footer>
+    //     <p>Click on logos to learn more about Vite and React!</p>
+    //   </footer>
 
-        <Routes>
-      <Route path="/admin" element={<AdminDashboard />} />
-          
-          <Route path="/" element={<HomePage />} />
-          <Route path="/find-donations" element={<FindDonations />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/register" element={<Auth />} />
-          <Route path="/login" element={<Auth />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/manage-donations" element={<ManageDonations />} /> {/* New route */}
-        </Routes>
-      </div>
-    </Router>
-  );
+      <Router>
+        <div className="app">
+          <canvas id="canvas" />
 
-  return (
-    <div className="App">
-      <header>
-        <h1>NGO Dashboard</h1>
-      </header>
-      <main>
-        <section className="statistics">
-          <div>
-            <h2>Donors</h2>
-            <p>Total Donors: {count}</p>
-            <button onClick={() => setCount(count + 1)}>Add Donor</button>
-          </div>
-        </section>
-        
-        {/* Donation Requests Section */}
-        <section className="donation-request">
-          <h2>Donation Requests</h2>
-          {donationRequests.length > 0 ? (
+          <nav>
             <ul>
-              {donationRequests.map((request) => (
-                <li key={request.id}>
-                  <h3>{request.category}</h3>
-                  <p>{request.description}</p>
-                </li>
-              ))}
+              <li>
+                <Link to="/" aria-label="Home">
+                  <i className="fas fa-home"></i> Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" aria-label="About Us">
+                  <i className="fas fa-info-circle"></i> About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/find-donations" aria-label="Find Donations">
+                  <i className="fas fa-search"></i> Find Donations
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" aria-label="Register">
+                  <i className="fas fa-user-plus"></i> Register
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" aria-label="Login">
+                  <i className="fas fa-sign-in-alt"></i> Login
+                </Link>
+              </li>
             </ul>
-          ) : (
-            <p>No donation requests found.</p>
-          )}
-        </section>
-      </main>
-      <footer>
-        <p>Click on logos to learn more about Vite and React!</p>
-      </footer>
-    </div>
+          </nav>
+
+          <Routes>
+            <Route path='/admin' element={<AdminNavBar/>}/>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/find-donations" element={<FindDonations />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/register" element={<Auth/>} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/manage-donations"
+              element={<ManageDonations />}
+            />{" "}
+            {/* New route */}
+          </Routes>
+        </div>
+      </Router>
+    // </div>
   );
+
 };
 
 export default App;

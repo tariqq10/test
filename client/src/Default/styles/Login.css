@@ -1,4 +1,4 @@
-/* .auth-container {
+.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,4 +91,4 @@ p:hover {
 
 .social-buttons button svg {
   margin-right: 10px;
-} */
+}
