@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
+from datetime import datetime
 
 metadata = MetaData()
 
@@ -22,12 +23,12 @@ class Users(db.Model, SerializerMixin):
     organization_id = db.Column(db.Integer, db.ForeignKey('organizations.organization_id'), unique=True)
     
     # Relationships
-    organization = db.relationship('Organizations', back_populates='user', uselist=False, cascade="all, delete-orphan")
+    organization = db.relationship('Organizations', back_populates='user', uselist=False)  # Removed delete-orphan
     donations = db.relationship('Donations', back_populates='user', cascade='all, delete-orphan')
     
     # Serialize rules
     serialize_rules = ('-organization', '-donations')
-    
+
 
 class Organizations(db.Model, SerializerMixin):
     __tablename__ = 'organizations'
@@ -39,11 +40,12 @@ class Organizations(db.Model, SerializerMixin):
     address = db.Column(db.String(50), nullable=False)
     
     # Relationships
-    user = db.relationship('Users', back_populates='organization', cascade = "all, delete-orphan")
+    user = db.relationship('Users', back_populates='organization')  # Kept it one-to-one without delete-orphan
     donation_requests = db.relationship('Donation_request', back_populates='organization', cascade="all, delete-orphan")
     
     # Serialize rules
     serialize_rules = ('-user', '-donation_requests')
+
 
 
 class Donation_request(db.Model, SerializerMixin):
@@ -113,3 +115,16 @@ class Reports(db.Model, SerializerMixin):
     total_donations = db.Column(db.Float)
     pending_donations = db.Column(db.Float)
     report_date = db.Column(db.DateTime, server_default=db.func.now())
+    
+class TokenBlacklist(db.Model):
+    __tablename__ = 'token_blacklist'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), unique=True, nullable=False)  # JWT ID
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, jti):
+        self.jti = jti
+
+    def to_dict(self):
+        return {'jti': self.jti, 'created_at': self.created_at}
