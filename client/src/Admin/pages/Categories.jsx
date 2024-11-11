@@ -1,9 +1,11 @@
+import AdminNavBar from "../components/AdminNavBar"
 import CategoriesForm from "../components/CategoriesForm"
 import CategoriesList from "../components/CategoryList"
 
 const Categories = () => {
     return(
         <div>
+            <AdminNavBar/>
             <h1>Categories</h1>
 
             <CategoriesList />

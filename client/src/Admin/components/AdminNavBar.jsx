@@ -1,24 +1,26 @@
-import { Link, Router, Routes, Route } from "react-router-dom"
-import Categories from "../pages/Categories"
+import { Link} from "react-router-dom"
 
 
 const AdminNavBar = () => {
     return (
       <nav>
-        <div>
+        <ul>
+          <li>
             <Link to="/admin">
-              <span>Home</span>
+            Home
             </Link>
+          </li>
+          <li>
             <Link to="/categories">
-              <span>Categories</span>
+            Categories
             </Link>
-            <Link to="/requests">
-              <span>Manage Request</span>
+          </li>
+          <li>
+            <Link to="/request">
+            Donation Request
             </Link>
-            <Routes>
-              <Route path="/categories" element={<Categories/>} />
-            </Routes>
-        </div>
+          </li>
+        </ul>
       </nav>
     );
 }

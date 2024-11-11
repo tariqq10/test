@@ -8,8 +8,7 @@ const AdminDashboard = () => {
       <div>
         <AdminNavBar />
         <Routes>
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/request" element={<DonationRequest />} />
+
           <Route path="'admin" element={<AdminNavBar />} />
         </Routes>
       </div>
