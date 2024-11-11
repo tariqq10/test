@@ -51,18 +51,65 @@ class DonationApprovalResource(Resource):
 
 
 class ApprovedDonationResource(Resource):
-    @admin_required
+    
+    
+    @jwt_required() #ensure the user is authenticated
     def get(self):
         '''
-        Get the list of approved donation requests for the admin.
-        This will return all donation requests with the status 'approved'
+        Get the list of approved donation requests for the logged in user.
+        if the user is an NGO, return their organizations approved requests
+        if the user is not an NGO return all approaved requets
+        
         ''' 
-        # Query for all approved donation requests
-        donation_requests = Donation_request.query.filter_by(status='approved').all()
         
-        if not donation_requests:
-            return {'message': 'No approved donation requests were found'}, 404
+        #get the user_id from the JWT token
+        user_id = get_jwt_identity()
         
-        approved_requests = [request.to_dict() for request in donation_requests]
+        #fetch the user object
+        user = Users.query.filter_by(user_id=user_id).first()
+        
+        if not user:
+            return {'message': 'User not found'}, 404
+        
+        #if the user is an NGO, return only the approved requests for their organization
+        if user.role == 'ngo':
+            #get the organization_id from the user object
+            organization_id = user.organization_id
+            
+            #query for approved donation requests created by the organization
+            donation_request = Donation_request.query.filter_by(
+                status='approved',
+                organization_id=organization_id
+            ).all()
+        else:
+            #if the user is not an NGO, return all approved donation requests
+            donation_request = Donation_request.query.filter_by(status='approved').all()
+            
+        if not donation_request:
+            return {"message": "No approved donation requests found"}, 404
+        
+        
+        #prepare the list of approved donation requests
+        approved_requests = [request.to_dict() for request in donation_request]
         
         return {'approved_donations': approved_requests}, 200
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        # # Query for all approved donation requests
+        # donation_requests = Donation_request.query.filter_by(status='approved').all()
+        
+        # if not donation_requests:
+        #     return {'message': 'No approved donation requests were found'}, 404
+        
+        # approved_requests = [request.to_dict() for request in donation_requests]
+        
+        # return {'approved_donations': approved_requests}, 200

@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource, reqparse
-from models import db, Users, Organizations
+from models import db, Users, Organizations, TokenBlacklist
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from flask_bcrypt import generate_password_hash, check_password_hash
 from Resources.roles import admin_required
@@ -162,4 +162,17 @@ class AdminOnlyResource(Resource):
         else:
             return {'message': 'Access denied. Admins only.'}, 403  # Forbidden if not admin
         
-# class LogoutResource(Resource):
+
+
+class LogoutResource(Resource):
+    @jwt_required()
+    def post(self):
+        # Get the JWT token from the request
+        jti = get_jwt_identity()
+
+        # Add the JWT ID to the blacklist
+        token = TokenBlacklist(jti=jti)
+        db.session.add(token)
+        db.session.commit()
+
+        return {'message': 'Logged out successfully'}, 200
