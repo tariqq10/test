@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import StatsCard from '../components/Dashboard/StatsCard';
 import Button from '../components/UI/Button';
+import AdminNavBar from '../components/AdminNavBar';
 
 const AdminDashboard = () => {
   
@@ -48,15 +49,20 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboard-overview">
+      <AdminNavBar />
+
       <h2>Admin Dashboard</h2>
       <div className="stats-container">
         <StatsCard label="Approved" count={stats.approved} />
         <StatsCard label="Pending" count={stats.pending} />
         <StatsCard label="Denied" count={stats.denied} />
       </div>
-      
+
       <div className="dashboard-actions">
-        <Button label="Manage Requests" onClick={() => console.log('Manage Categories')} />
+        <Button
+          label="Manage Requests"
+          onClick={() => console.log("Manage Categories")}
+        />
       </div>
     </div>
   );

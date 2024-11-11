@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUserPlus, FaEnvelope } from 'react-icons/fa'; // Import icons
 import '../styles/FindDonations.css'; 
+import DefaultDashboard from './DefaultDashboard';
 
 const FindDonations = () => {
   const [participants, setParticipants] = useState([
@@ -21,6 +22,7 @@ const FindDonations = () => {
   return (
     <section className="projects-section">
       <div className="projects-section-header">
+        <DefaultDashboard/>
         <p>Find Donations</p>
         <div className="time">Time Left: 12 Days</div>
       </div>

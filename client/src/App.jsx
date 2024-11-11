@@ -11,8 +11,30 @@ import ManageDonations from './Default/components/ManageDonations'; // Import th
 import './Admin/styles/dashboard.css';
 import Login from './Default/components/Login';
 import AdminNavBar from './Admin/components/AdminNavBar';
+import Categories from './Admin/pages/Categories';
+import DonationRequest from './Admin/pages/DonationRequest';
+import DefaultNavbar from './Default/components/DefaultNavbar';
+import AdminDashboard from './Admin/pages/AdminDashboard';
 
 const App = () => {
+  const [role, setRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setRole('admin')
+    setIsAuthenticated(true)
+  }, []);
+
+  const renderNavbar = () => {
+    if(isAuthenticated) {
+      switch (role) {
+        case 'admin':
+          return <AdminNavBar />;
+        default:
+          return <DefaultNavbar />
+      }
+    }
+  }
     const [count, setCount] = useState(0);
   const [donationRequests, setDonationRequests] = useState([]);
 
@@ -95,89 +117,24 @@ const App = () => {
   }, []);
 
   return (
-    // <div>
-    //   <header>
-    //     <h1>NGO Dashboard</h1>
-    //   </header>
-    //   <main>
-    //     <section className="statistics">
-    //       <div>
-    //         <h2>Donors</h2>
-    //         <p>Total Donors: {count}</p>
-    //         <button onClick={() => setCount(count + 1)}>Add Donor</button>
-    //       </div>
-    //     </section>
+    <Router>
+      <div className="app">
+        <canvas id="canvas" />
 
-    //     {/* Donation Requests Section */}
-    //     <section className="donation-request">
-    //       <h2>Donation Requests</h2>
-    //       {donationRequests.length > 0 ? (
-    //         <ul>
-    //           {donationRequests.map((request) => (
-    //             <li key={request.id}>
-    //               <h3>{request.category}</h3>
-    //               <p>{request.description}</p>
-    //             </li>
-    //           ))}
-    //         </ul>
-    //       ) : (
-    //         <p>No donation requests found.</p>
-    //       )}
-    //     </section>
-    //   </main>
-    //   <footer>
-    //     <p>Click on logos to learn more about Vite and React!</p>
-    //   </footer>
-
-      <Router>
-        <div className="app">
-          <canvas id="canvas" />
-
-          <nav>
-            <ul>
-              <li>
-                <Link to="/" aria-label="Home">
-                  <i className="fas fa-home"></i> Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" aria-label="About Us">
-                  <i className="fas fa-info-circle"></i> About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/find-donations" aria-label="Find Donations">
-                  <i className="fas fa-search"></i> Find Donations
-                </Link>
-              </li>
-              <li>
-                <Link to="/register" aria-label="Register">
-                  <i className="fas fa-user-plus"></i> Register
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" aria-label="Login">
-                  <i className="fas fa-sign-in-alt"></i> Login
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
-          <Routes>
-            <Route path='/admin' element={<AdminNavBar/>}/>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/find-donations" element={<FindDonations />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/register" element={<Auth/>} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/manage-donations"
-              element={<ManageDonations />}
-            />{" "}
-            {/* New route */}
-          </Routes>
-        </div>
-      </Router>
+        <Routes>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/request" element={<DonationRequest />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/find-donations" element={<FindDonations />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/register" element={<Auth />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/manage-donations" element={<ManageDonations />} />{" "}
+          {/* New route */}
+        </Routes>
+      </div>
+    </Router>
     // </div>
   );
 

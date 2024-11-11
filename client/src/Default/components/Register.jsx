@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import DefaultDashboard from './DefaultDashboard';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -27,6 +28,7 @@ const Login = () => {
         <div className="card-3d-wrapper">
           <div className="card-front">
             <div className="center-wrap">
+              <DefaultDashboard/>
               <h2>Login</h2>
               <form>
                 <div className="form-group">
@@ -48,11 +50,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <button
-                    type="button"
-                    onClick={handleLogin}
-                    className="btn"
-                  >
+                  <button type="button" onClick={handleLogin} className="btn">
                     Login
                   </button>
                 </div>

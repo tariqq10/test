@@ -1,9 +1,11 @@
 import React from 'react';
 import '../styles/AboutUs.css';
+import DefaultDashboard from './DefaultDashboard';
 
 const AboutUs = () => {
   return (
     <div className="about-us">
+      <DefaultDashboard/>
       <h1>About the Online Charity Platform</h1>
       <p>
         Our mission is to support local charity organizations and help them
