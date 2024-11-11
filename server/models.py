@@ -112,8 +112,9 @@ class Reports(db.Model, SerializerMixin):
     __tablename__ = 'reports'
     
     report_id = db.Column(db.Integer, primary_key=True)
-    total_donations = db.Column(db.Float)
-    pending_donations = db.Column(db.Float)
+    total_donations = db.Column(db.Float, nullable=False, default=0.0)
+    total_pending_requests = db.Column(db.Float, nullable=False, default=0.0)
+    total_approved_requests = db.Column(db.Float, nullable=False, default=0.0)
     report_date = db.Column(db.DateTime, server_default=db.func.now())
     
 class TokenBlacklist(db.Model):
