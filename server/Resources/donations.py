@@ -32,7 +32,7 @@ class DonationResource(Resource):
             return donation.to_dict(), 200
         
         
-        elif user.role == 'donor':  # If the logged-in user is a donor
+        elif user.role == 'user':  # If the logged-in user is a donor
             if id is None:
                 # Fetch donations made by the donor
                 user_donations = Donations.query.filter_by(user_id=user_id).all()
