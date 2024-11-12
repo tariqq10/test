@@ -1,3 +1,6 @@
+import React from 'react';
+import AppRouter from './Routes/router';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
@@ -120,6 +123,7 @@ const App = () => {
     <Router>
       <div className="app">
         <canvas id="canvas" />
+    <AppRouter/>
 
         <Routes>
           <Route path="/admin" element={<AdminDashboard />} />
