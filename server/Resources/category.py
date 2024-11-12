@@ -1,13 +1,14 @@
 from flask_restful import Resource, reqparse
-from models import Categories, db
+from models import Categories,Users,Donation_request, db
 from flask import request
 from Resources.roles import admin_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 class CategoryResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, required=True, help='Name of the category is required')
     parser.add_argument('description', type=str, required=True, help='Description of the category is required')
-    @admin_required
+
     def get(self, id=None):
         #if id is not provided, fetch all the categories
         if id is None:
@@ -75,6 +76,26 @@ class CategoryResource(Resource):
             "category_id": id
         }, 200
         
+        
+class ApprovedDonationRequestsByCategoryResource(Resource):
+    @jwt_required() #ensure the user is authenticated
+    def get(self, category_id):
+        #fetch the user_id and verify the role from the JWT token
+        user_id = get_jwt_identity()
+        user = Users.query.filter_by(user_id=user_id).first()
+        
+        #check if the user has the user/donor role
+        if user is None or user.role not in ['user', 'donor']:
+            return {'message': 'Access denied: Only users with the donor/user role can view approved donation requests by category'}, 403
+        
+        #fetch approaved donation requests for the specific category
+        approaved_request = Donation_request.query.filter_by(category_id=category_id, status='approved').all()
+        
+        if not approaved_request:
+            return {'message': "No approaved donation requests found for this category"}, 404
+        
+        #return the serialized list of approaved donation request
+        return [request.to_dict() for request in approaved_request], 200
             
     
     

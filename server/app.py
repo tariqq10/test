@@ -9,7 +9,7 @@ from datetime import timedelta
 from flask_restful import Api
 from models import db, Users, Organizations, Donation_request, Categories, Donations, Reports
 from Resources.auth import UserResource, LoginResource, LogoutResource 
-from Resources.category import CategoryResource
+from Resources.category import CategoryResource, ApprovedDonationRequestsByCategoryResource
 from Resources.organization import OrganizationResource
 from Resources.request import DonationRequestResource
 from Resources.donations import DonationResource
@@ -44,6 +44,7 @@ api.add_resource(UserResource, '/users', '/users/<int:user_id>')
 api.add_resource(LoginResource, '/login')
 api.add_resource(LogoutResource, '/logout')
 api.add_resource(CategoryResource, '/categories', '/categories/<int:id>')
+api.add_resource(ApprovedDonationRequestsByCategoryResource, '/categories/<int:category_id>/approved_requests')
 api.add_resource(OrganizationResource, '/organizations', '/organizations/<int:id>')
 api.add_resource(DonationRequestResource, '/requests', '/requests/<int:id>')
 api.add_resource(DonationResource, '/donations', '/donations/<int:id>')

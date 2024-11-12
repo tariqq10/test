@@ -3,9 +3,12 @@ from models import Donations, db, Reports, Donation_request
 from sqlalchemy import func
 from flask_jwt_extended import jwt_required
 from datetime import datetime
+from Resources.roles import admin_required
 
 class ReportResource(Resource):
-
+    
+    
+    # @admin_required
     @jwt_required()
     def get(self):
         """

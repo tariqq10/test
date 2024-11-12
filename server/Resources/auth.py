@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource, reqparse
 from models import db, Users, Organizations, TokenBlacklist
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, get_jwt
 from flask_bcrypt import generate_password_hash, check_password_hash
 from Resources.roles import admin_required
 
@@ -167,12 +167,19 @@ class AdminOnlyResource(Resource):
 class LogoutResource(Resource):
     @jwt_required()
     def post(self):
-        # Get the JWT token from the request
-        jti = get_jwt_identity()
+        # Get the JWT token's unique identifier (jti)
+        jti = get_jwt().get("jti")
+
+        # Check if the jti is already in the blacklist
+        if TokenBlacklist.query.filter_by(jti=jti).first():
+            return {'message': 'Token already blacklisted'}, 200
 
         # Add the JWT ID to the blacklist
         token = TokenBlacklist(jti=jti)
         db.session.add(token)
-        db.session.commit()
-
-        return {'message': 'Logged out successfully'}, 200
+        try:
+            db.session.commit()
+            return {'message': 'Logged out successfully'}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {'message': 'Error logging out', 'error': str(e)}, 500
