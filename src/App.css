@@ -1,0 +1,214 @@
+/* Root and Layout */
+#root {
+  display: flex;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  height: 100vh;
+}
+
+.layout {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+main {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+  background-color: #f4f4f4; /* Light background color for the main content */
+}
+
+/* Logo Styling */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+/* Animation for Logo (Keep if you want spinning logo effect) */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Styling for Donor Stats */
+.statistics {
+  margin-bottom: 2rem;
+}
+
+.statistics h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.statistics p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.statistics button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.read-the-docs {
+  color: #898989;
+}
+
+/* Sidebar Styling */
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 20px 0;
+}
+
+.sidebar nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Navbar Styling */
+nav {
+  background-color: #333;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+nav ul li a.active {
+  font-weight: bold;
+}
+
+/* Page Styles */
+.page {
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.page h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.page p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.page .button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.page .button:hover {
+  background-color: #45a049;
+}
+
+/* Page Specific Styles */
+.home-page {
+  background-color: #f9f9f9;
+}
+
+.new-donation-page {
+  background-color: #e9f7f7;
+}
+
+.donation-history-page {
+  background-color: #f4f4f4;
+}
+
+.profile-page {
+  background-color: #f2f2f2;
+}
+
+.logout-page {
+  background-color: #fbe9e7;
+}
+
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+}
+
+footer p {
+  margin: 0;
+}
