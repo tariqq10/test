@@ -7,7 +7,7 @@
   }
   
   .card-3d-wrap {
-    width: 400px;
+    width: 600px;
     height: 500px;
     perspective: 1500px;
   }
@@ -25,11 +25,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
-<<<<<<< HEAD:client/src/styles/Auth.css
-=======
-    /* position: absolute; */
->>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f:client/src/Donor/styles/Auth.css
-    backface-visibility: hidden;
+    position: absolute;
+    /* backface-visibility: hidden; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,9 +41,9 @@
     transform: rotateY(0deg);
   }
   
-  .card-back {
+  /* .card-back {
     transform: rotateY(180deg);
-  }
+  } */
   
   .center-wrap {
     width: 100%;

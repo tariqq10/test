@@ -2,7 +2,6 @@
 import Swal from 'sweetalert2';
 import { FaGoogle, FaFacebook, FaGithub } from 'react-icons/fa';
 import '../styles/Auth.css'; // Ensure your CSS file is imported
-// import DefaultDashboard from '../Admin/components/DefaultDashboard
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from "yup";
@@ -21,11 +20,6 @@ const setTheme = (theme) => {
 };
 
 const AuthNGO = () => {
-  // const [isLogin, setIsLogin] = useState(true);
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [fullName, setFullName] = useState('');
-  // const [phone, setPhone] = useState('');
 
   const navigate = useNavigate()
 
@@ -94,30 +88,30 @@ const AuthNGO = () => {
     }
   };
 
-  // const handleRegister = (e) => {
-  //   e.preventDefault();
+  const handleRegister = (e) => {
+    e.preventDefault();
 
-  //   if (fullName && phone && email && password) {
-  //     localStorage.setItem('email', email);
-  //     localStorage.setItem('password', password);
+    if (fullName && phone && email && password) {
+      localStorage.setItem('email', email);
+      localStorage.setItem('password', password);
       
-  //     Swal.fire({
-  //       title: 'Registration Successful!',
-  //       text: 'You can now log in.',
-  //       icon: 'success',
-  //       confirmButtonText: 'OK',
-  //     });
+      Swal.fire({
+        title: 'Registration Successful!',
+        text: 'You can now log in.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
 
-  //     setIsLogin(true); // After registration, switch to login form
-  //   } else {
-  //     Swal.fire({
-  //       title: 'Registration Failed!',
-  //       text: 'Please fill out all fields.',
-  //       icon: 'error',
-  //       confirmButtonText: 'Try Again',
-  //     });
-  //   }
-  // };
+      setIsLogin(true); // After registration, switch to login form
+    } else {
+      Swal.fire({
+        title: 'Registration Failed!',
+        text: 'Please fill out all fields.',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+      });
+    }
+  };
 
   return (
     <div className="auth-container">

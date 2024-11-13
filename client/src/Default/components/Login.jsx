@@ -1,5 +1,3 @@
-// import React, { useState } from 'react';
-import Swal from 'sweetalert2';
 import '../styles/Login.css';
 import DefaultDashboard from './DefaultDashboard';
 import { Link, useNavigate } from "react-router-dom";
@@ -40,41 +38,12 @@ const Login = () => {
       }
     }
   })
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [isFlipped, setIsFlipped] = useState(false); // For card flip
-
-  // Handle login logic
-  // const handleLogin = () => {
-  //   if (username === 'admin' && password === 'password') {
-  //     Swal.fire({
-  //       title: 'Welcome!',
-  //       text: 'You have logged in successfully.',
-  //       icon: 'success',
-  //     });
-  //   } else {
-  //     Swal.fire({
-  //       title: 'Error!',
-  //       text: 'Invalid username or password.',
-  //       icon: 'error',
-  //     });
-  //   }
-  // };
-
-  // // Handle register logic (for simplicity, just a basic log)
-  // const handleRegister = () => {
-  //   Swal.fire({
-  //     title: 'Registered!',
-  //     text: 'You have successfully registered.',
-  //     icon: 'success',
-  //   });
-  // };
 
   return (
     <div className="section full-height">
+      <DefaultDashboard />
       <div className="card-3d-wrap">
         <div className="card-3d-wrapper">
-          <DefaultDashboard />
           {/* Front of the card: Login Form */}
           <div>
             <div className="center-wrap">
