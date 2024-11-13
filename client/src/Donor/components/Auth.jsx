@@ -73,13 +73,13 @@ const Auth = () => {
 
   return (
     <div className="auth-container">
+      <DefaultDashboard />
+
       <div className="card-3d-wrap mx-auto">
         <div className="card-3d-wrapper">
           {/* Register Card */}
           <div className="card-back">
             <div className="center-wrap">
-              <DefaultDashboard />
-
               <h4>Register</h4>
               <form onSubmit={formik.handleSubmit}>
                 <input
