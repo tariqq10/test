@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+/* 
+=======
 canvas {
   position: absolute;
   top: 0;
@@ -15,6 +18,7 @@ canvas {
   will-change: filter;
   transition: filter 300ms;
 }
+>>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f
 
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
@@ -32,7 +36,7 @@ canvas {
   to {
     transform: rotate(360deg);
   }
-
+}
 .app {
   position: relative;
   z-index: 1;
@@ -72,9 +76,12 @@ nav a {
   transition: background-color 0.3s;
   
 }
-
+}
 nav a:hover {
   background-color: rgba(255, 255, 255, 0.2);
+<<<<<<< HEAD
+} */
+=======
 }
 
 .statistics button {
@@ -90,3 +97,4 @@ nav a:hover {
 .read-the-docs {
   color: #898989;
 }
+>>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f

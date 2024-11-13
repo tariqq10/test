@@ -42,6 +42,16 @@ const HomePage = () => {
       <DefaultDashboard />
 
       {/* New Navigation Bar for Managing Donations */}
+<<<<<<< HEAD:client/src/components/HomePage.jsx
+      {/* <nav className="donation-management-nav">
+        <ul>
+          <li><Link to="/manage-donations/overview">Overview</Link></li>
+          <li><Link to="/manage-donations/add-project">Manage Donations</Link></li>
+          <li><Link to="/manage-donations/donors">View Donors</Link></li>
+          <li><Link to="/manage-donations/reports">Reports</Link></li>
+        </ul>
+      </nav> */}
+=======
       <nav className="donation-management-nav">
         {/* <ul>
           <li><Link to="/manage-donations/overview">Overview</Link></li>
@@ -50,6 +60,7 @@ const HomePage = () => {
           <li><Link to="/manage-donations/reports">Reports</Link></li> */}
         {/* </ul> */}
       </nav>
+>>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f:client/src/Default/components/HomePage.jsx
 
       {/* Welcome Section */}
       <section className="welcome-section">

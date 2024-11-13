@@ -9,7 +9,7 @@ from datetime import timedelta
 from flask_restful import Api
 from models import db, Users, Organizations, Donation_request, Categories, Donations, Reports
 from Resources.auth import UserResource, LoginResource, LogoutResource 
-from Resources.category import CategoryResource
+from Resources.category import CategoryResource, ApprovedDonationRequestsByCategoryResource
 from Resources.organization import OrganizationResource
 from Resources.request import DonationRequestResource
 from Resources.donations import DonationResource
@@ -39,17 +39,18 @@ migrate = Migrate(app, db)
 #link our db to the flask instance
 db.init_app(app)
 
-
-api.add_resource(UserResource, '/users', '/users/<int:user_id>')
-api.add_resource(LoginResource, '/login')
+                                                                    #mvps
+api.add_resource(UserResource, '/users', '/users/<int:user_id>')# Allow user authentication
+api.add_resource(LoginResource, '/login') # Give the right to add, update, or remove data only to the right people based on their classification.
 api.add_resource(LogoutResource, '/logout')
-api.add_resource(CategoryResource, '/categories', '/categories/<int:id>')
-api.add_resource(OrganizationResource, '/organizations', '/organizations/<int:id>')
-api.add_resource(DonationRequestResource, '/requests', '/requests/<int:id>')
-api.add_resource(DonationResource, '/donations', '/donations/<int:id>')
-api.add_resource(DonationApprovalResource, '/approvals', '/approvals/<int:request_id>')
-api.add_resource(ApprovedDonationResource, '/approved')
-api.add_resource(ReportResource, '/reports')
+api.add_resource(CategoryResource, '/categories', '/categories/<int:id>') #Admins can create the different categories of donations.
+api.add_resource(ApprovedDonationRequestsByCategoryResource, '/categories/<int:category_id>/approved_requests') #Donors should be able to filter by category.
+api.add_resource(OrganizationResource, '/organizations', '/organizations/<int:id>')#Classify users on whether they are Admin, NGOs or Donors. in this case they are NGO's
+api.add_resource(DonationRequestResource, '/requests', '/requests/<int:id>')#Admins can view all the donation requests.
+api.add_resource(DonationResource, '/donations', '/donations/<int:id>')#Donors can be able to donate the amount they have. and Donors can view a list of their donations in the profiles.
+api.add_resource(DonationApprovalResource, '/approvals', '/approvals/<int:request_id>')#Only Admins can approve an NGO’s donation request.
+api.add_resource(ApprovedDonationResource, '/approved')#Donors can view all the approved donation requests
+api.add_resource(ReportResource, '/reports')#admin can view all the donations/pending and approaved donation requests
 api.add_resource(ReportResource, '/reports/user/<int:user_id>', endpoint="user_donations")
 
 

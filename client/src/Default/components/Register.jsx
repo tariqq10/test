@@ -1,69 +1,17 @@
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
-import DefaultDashboard from './DefaultDashboard';
+import { Link } from "react-router-dom";
+import DefaultDashboard from "./DefaultDashboard";
 
-const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = () => {
-    if (username === 'admin' && password === 'password') {
-      Swal.fire({
-        title: 'Welcome!',
-        text: 'You have logged in successfully.',
-        icon: 'success',
-      });
-    } else {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Invalid username or password.',
-        icon: 'error',
-      });
-    }
-  };
-
-  return (
-    <div className="section full-height">
-      <div className="card-3d-wrap">
-        <div className="card-3d-wrapper">
-          <div className="card-front">
-            <div className="center-wrap">
-              <DefaultDashboard/>
-              <h2>Login</h2>
-              <form>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="form-style"
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="form-style"
-                  />
-                </div>
-                <div className="form-group">
-                  <button type="button" onClick={handleLogin} className="btn">
-                    Login
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div className="card-back">
-            {/* Additional content can be added here if necessary */}
-          </div>
+const Register = () => {
+    return (
+      <div>
+        <DefaultDashboard/>
+        <div>
+          <h1>sign up as </h1>
+          <button><Link to="/users/donor">donor</Link></button>
+          <button><Link to="/users/ngo">NGO</Link></button>
         </div>
       </div>
-    </div>
-  );
-};
+    );
 
-export default Login;
+}
+export default Register
