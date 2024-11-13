@@ -11,11 +11,7 @@ const AboutUs = () => {
 
   return (
     <div className="about-us">
-<<<<<<< HEAD:client/src/components/AboutUs.jsx
-      {/* Initial Section */}
-=======
       <DefaultDashboard/>
->>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f:client/src/Default/components/AboutUs.jsx
       <h1>About the Online Charity Platform</h1>
       <p>
         Our mission is to support local charity organizations and help them

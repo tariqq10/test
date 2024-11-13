@@ -1,5 +1,3 @@
-// import React, { useState } from 'react';
-import Swal from 'sweetalert2';
 import '../styles/Login.css';
 import DefaultDashboard from './DefaultDashboard';
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +17,7 @@ const Login = () => {
       password: "",
     },
     onSubmit: async (values) => {
-      const res = await fetch({}, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,41 +38,12 @@ const Login = () => {
       }
     }
   })
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [isFlipped, setIsFlipped] = useState(false); // For card flip
-
-  // Handle login logic
-  // const handleLogin = () => {
-  //   if (username === 'admin' && password === 'password') {
-  //     Swal.fire({
-  //       title: 'Welcome!',
-  //       text: 'You have logged in successfully.',
-  //       icon: 'success',
-  //     });
-  //   } else {
-  //     Swal.fire({
-  //       title: 'Error!',
-  //       text: 'Invalid username or password.',
-  //       icon: 'error',
-  //     });
-  //   }
-  // };
-
-  // // Handle register logic (for simplicity, just a basic log)
-  // const handleRegister = () => {
-  //   Swal.fire({
-  //     title: 'Registered!',
-  //     text: 'You have successfully registered.',
-  //     icon: 'success',
-  //   });
-  // };
 
   return (
     <div className="section full-height">
+      <DefaultDashboard />
       <div className="card-3d-wrap">
         <div className="card-3d-wrapper">
-          <DefaultDashboard />
           {/* Front of the card: Login Form */}
           <div>
             <div className="center-wrap">
@@ -83,6 +52,7 @@ const Login = () => {
                 <div className="form-group">
                   <input
                     type="text"
+                    name="email"
                     placeholder="Email"
                     onChange={formik.handleChange}
                     value={formik.values.email}
@@ -93,6 +63,7 @@ const Login = () => {
                 <div className="form-group">
                   <input
                     type="password"
+                    name="password"
                     placeholder="Password"
                     onChange={formik.handleChange}
                     value={formik.values.password}
@@ -112,43 +83,6 @@ const Login = () => {
               </p>
             </div>
           </div>
-
-          {/* Back of the card: Register Form
-          <div className="card-back">
-            <div className="center-wrap">
-              <h2>Login</h2>
-              <form>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="form-style"
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="form-style"
-                  />
-                </div>
-                <div className="form-group">
-                  <button
-                    type="button"
-                    onClick={handleRegister}
-                    className="btn"
-                  >
-                    Login
-                  </button>
-                </div>
-              </form>
-              <p onClick={() => setIsFlipped(false)}>Already have an account? Login</p>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
