@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 const NewDonationForm = () => {
   // State to track form inputs
@@ -44,6 +45,7 @@ const NewDonationForm = () => {
 
   return (
     <div style={styles.formContainer}>
+      <Navbar/>
       <h2>New Donation</h2>
       {isSubmitted && <p style={styles.successMessage}>Your donation has been submitted!</p>}
       <form onSubmit={handleSubmit}>
