@@ -1,7 +1,6 @@
 import React from 'react';
-import DashboardOverview from '../components/Dashboard/DashboardOverview';
 import '../styles/dashboard.css';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import StatsCard from '../components/Dashboard/StatsCard';
 import Button from '../components/UI/Button';
 import AdminNavBar from '../components/AdminNavBar';
