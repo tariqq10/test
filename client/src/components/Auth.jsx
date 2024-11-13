@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { FaGoogle, FaFacebook, FaGithub } from 'react-icons/fa';
-import '../styles/Auth.css'; // Ensure your CSS file is imported
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import '../styles/Auth.css';
 
 const themes = [
-  // Same theme array...
+  // Theme definitions...
 ];
 
 const setTheme = (theme) => {
@@ -21,6 +22,8 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -28,7 +31,6 @@ const Auth = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     const storedEmail = localStorage.getItem('email');
     const storedPassword = localStorage.getItem('password');
 
@@ -38,6 +40,8 @@ const Auth = () => {
         text: 'Welcome back!',
         icon: 'success',
         confirmButtonText: 'OK',
+      }).then(() => {
+        navigate('/dashboard'); // Redirect to Dashboard
       });
     } else {
       Swal.fire({
@@ -61,9 +65,10 @@ const Auth = () => {
         text: 'You can now log in.',
         icon: 'success',
         confirmButtonText: 'OK',
+      }).then(() => {
+        setIsLogin(true); // Switch to login form after successful registration
+        navigate('/dashboard'); // Redirect to Dashboard
       });
-
-      setIsLogin(true); // After registration, switch to login form
     } else {
       Swal.fire({
         title: 'Registration Failed!',
@@ -100,7 +105,6 @@ const Auth = () => {
               <p>
                 Don't have an account? <span onClick={toggleForm}>Sign Up</span>
               </p>
-
               {/* Social Media Buttons */}
               <div className="social-btns">
                 <button className="social-btn google">
@@ -150,7 +154,6 @@ const Auth = () => {
               <p>
                 Already have an account? <span onClick={toggleForm}>Log In</span>
               </p>
-
               {/* Social Media Buttons */}
               <div className="social-btns">
                 <button className="social-btn google">
