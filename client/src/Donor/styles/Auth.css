@@ -1,181 +1,110 @@
-:root {
-    --background: #e1e1e1;
-    --color: #333333; 
-    --primary-color: #5f6368; 
-    --glass-color: rgba(255, 255, 255, 0.6); 
-}
-
-body {
-    background: var(--background);
-    color: var(--color);
-    font-family: Arial, sans-serif;
-}
-
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: var(--background);
-    color: var(--color);
-    padding: 0 20px;
-    flex-direction: column; 
-}
-
-.card-3d-wrap {
-    width: 100%;
-    max-width: 380px;
+    background-color: #f0f0f0;
+  }
+  
+  .card-3d-wrap {
+    width: 400px;
     height: 500px;
     perspective: 1500px;
-}
-
-.card-3d-wrapper {
+  }
+  
+  .card-3d-wrapper {
+    position: relative;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transform: rotateY(0);
-    transition: transform 1s;
-}
-
-.card-front,
-.card-back {
+    transform: rotateY(0deg);
+    transition: transform 0.6s ease-in-out;
+  }
+  
+  .card-front, .card-back {
+    position: absolute;
     width: 100%;
     height: 100%;
+<<<<<<< HEAD:client/src/styles/Auth.css
+=======
     /* position: absolute; */
+>>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f:client/src/Donor/styles/Auth.css
     backface-visibility: hidden;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    background: var(--primary-color);
     padding: 20px;
-}
-
-.card-front.active,
-.card-back.active {
+    background-color: #fff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .card-front.active, .card-back.active {
+    transform: rotateY(0deg);
+  }
+  
+  .card-back {
     transform: rotateY(180deg);
-}
-
-.center-wrap {
+  }
+  
+  .center-wrap {
+    width: 100%;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    width: 100%;
-}
-
-form input,
-form button {
-    width: 100%;
+  }
+  
+  h4 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  input {
+    width: 80%;
+    padding: 10px;
     margin: 10px 0;
-    padding: 10px;
-}
-
-button {
-    background-color: var(--primary-color);
-    color: var(--color);
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #3c4043; 
-}
-
-.social-btns {
-    margin-top: auto; 
-    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  p {
+    margin-top: 15px;
+  }
+  
+  .social-btns {
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    padding-bottom: 20px; 
-}
-
-.social-btn {
-    background-color: var(--primary-color);
-    color: var(--color);
-    border: none;
+    justify-content: space-around;
     width: 100%;
-    padding: 10px;
-    margin: 5px 0;
+    margin-top: 20px;
+  }
+  
+  .social-btn {
+    display: flex;
+    align-items: center;
+    background-color: #ddd;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.social-btn.google {
-    background-color: #db4437; 
-}
-
-.social-btn.facebook {
-    background-color: #4267b2; 
-}
-
-.social-btn.github {
-    background-color: #f3e8e8; 
-}
-
-.social-btn svg {
-    margin-right: 8px;
-}
-
-.theme-btn-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-top: auto; 
-    padding-bottom: 20px; 
-}
-
-.theme-btn-container-right {
-    position: fixed;  
-    right: 20px;      
-    bottom: 20px;     
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-/* Theme Buttons on the Left */
-.theme-btn-container-left {
-    position: fixed;  
-    left: 20px;       
-    bottom: 20px;     
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-.theme-btn {
-    width: 40px;
-    height: 40px;
-    margin: 0 5px;
-    border-radius: 50%;
-    background-color: #000;
-    cursor: pointer;
-    opacity: 0.7; 
-    transition: opacity 0.3s;
-}
-
-.theme-btn:hover {
-    opacity: 1; 
-}
-
-@media (max-width: 768px) {
-    .theme-btn-container-right,
-    .theme-btn-container-left {
-        bottom: 10px;
-    }
-
-    .social-btns {
-        bottom: 10px;
-    }
-}
+  }
+  
+  .social-btn.google { background-color: #db4437; }
+  .social-btn.facebook { background-color: #3b5998; }
+  .social-btn.github { background-color: #333; }
+  
+  .social-btn i {
+    margin-right: 10px;
+  }
+  
