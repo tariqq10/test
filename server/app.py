@@ -15,6 +15,7 @@ from Resources.request import DonationRequestResource
 from Resources.donations import DonationResource
 from Resources.approval import DonationApprovalResource, ApprovedDonationResource
 from Resources.report import ReportResource
+from Resources.mpesa import MpesaTokenResouce
 
 
 
@@ -52,6 +53,7 @@ api.add_resource(DonationApprovalResource, '/approvals', '/approvals/<int:reques
 api.add_resource(ApprovedDonationResource, '/approved')#Donors can view all the approved donation requests
 api.add_resource(ReportResource, '/reports')#admin can view all the donations/pending and approaved donation requests
 api.add_resource(ReportResource, '/reports/user/<int:user_id>', endpoint="user_donations")
+# api.add_resource(MpesaTokenResouce, '/mpesa/token')
 
 
 
