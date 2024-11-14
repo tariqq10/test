@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/* 
-=======
 canvas {
   position: absolute;
   top: 0;
@@ -18,7 +15,6 @@ canvas {
   will-change: filter;
   transition: filter 300ms;
 }
->>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f
 
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
@@ -46,8 +42,8 @@ canvas {
 
 nav ul {
   display: flex;
-  flex-direction: column; /* Change to vertical layout */
-  align-items: flex-start; /* Align links to the left */
+  flex-direction: row; /* Horizontal by default */
+  align-items: center;/* Align links to the left */
   padding: 0;
   margin-top: 20px;
 }
@@ -80,9 +76,6 @@ nav a {
 }
 nav a:hover {
   background-color: rgba(255, 255, 255, 0.2);
-<<<<<<< HEAD
-} */
-=======
 }
 
 .statistics button {
@@ -98,4 +91,3 @@ nav a:hover {
 .read-the-docs {
   color: #898989;
 }
->>>>>>> e82d2e8afa71288f53f79a907c1000c553c2c67f
