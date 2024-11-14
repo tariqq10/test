@@ -45,7 +45,7 @@ const Auth = () => {
       confirmPassword: "",
     },
     onSubmit: async (values) => {
-      const res = await fetch({} / register, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users` / register, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,65 +73,71 @@ const Auth = () => {
 
   return (
     <div className="auth-container">
+      <DefaultDashboard />
+
       <div className="card-3d-wrap mx-auto">
         <div className="card-3d-wrapper">
           {/* Register Card */}
           <div className="card-back">
             <div className="center-wrap">
-              <DefaultDashboard />
-
               <h4>Register</h4>
               <form onSubmit={formik.handleSubmit}>
                 <input
                   type="text"
+                  name= "first_name"
                   placeholder="First Name"
                   value={formik.values.first_name}
                   onChange={formik.handleChange}
-                  helperText={formik.errors.first_name}
+                  // helpertext={formik.errors.first_name}
                   color={formik.errors.first_name ? "failure" : undefined}
                 />
                 <input
                   type="text"
+                  name="last_name"
                   placeholder="Last Name"
                   value={formik.values.last_name}
                   onChange={formik.handleChange}
-                  helperText={formik.errors.last_name}
+                  // helpertext={formik.errors.last_name}
                   color={formik.errors.last_name ? "failure" : undefined}
                 />
 
                 <input
                   type="email"
+                  name="email"
                   placeholder="Email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
-                  helperText={formik.errors.email}
+                  // helpertext={formik.errors.email}
                   color={formik.errors.email ? "failure" : undefined}
                 />
 
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="Phone"
                   value={formik.values.phone}
                   onChange={formik.handleChange}
-                  helperText={formik.errors.phone}
+                  // helpertext={formik.errors.phone}
                   color={formik.errors.phone ? "failure" : undefined}
                 />
 
                 <input
                   type="password"
+                  name="password"
                   placeholder="Password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
-                  helperText={formik.errors.password}
+                  // helpertext={formik.errors.password}
                   color={formik.errors.password ? "failure" : undefined}
                 />
 
                 <input
                   type="password"
+                  name="confirmPassword"
                   placeholder="confirmation Password"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
-                  helperText={formik.errors.confirmPassword}
+                  // helpertext={formik.errors.confirmPassword}
                   color={formik.errors.confirmPassword ? "failure" : undefined}
                 />
                 <button type="submit">Register</button>

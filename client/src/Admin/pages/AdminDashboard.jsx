@@ -1,9 +1,11 @@
 import React from 'react';
 import '../styles/dashboard.css';
+import '../styles/sidebar.css';
 import { useEffect, useState } from 'react';
 import StatsCard from '../components/Dashboard/StatsCard';
 import Button from '../components/UI/Button';
 import AdminNavBar from '../components/AdminNavBar';
+import Sidebar from '../components/Sidebar'; 
 
 const AdminDashboard = () => {
   
@@ -49,22 +51,27 @@ const AdminDashboard = () => {
     fetchCategories();
   }, []);
 
+  
   return (
     <div className="dashboard-overview">
       <AdminNavBar />
+      <div className="dashboard-container">
+        <Sidebar /> 
+        <div className="dashboard-main-content">
+          <h2>Admin Dashboard</h2>
+          <div className="stats-container">
+            <StatsCard label="Approved" count={stats.approved} />
+            <StatsCard label="Pending" count={stats.pending} />
+            <StatsCard label="Denied" count={stats.denied} />
+          </div>
 
-      <h2>Admin Dashboard</h2>
-      <div className="stats-container">
-        <StatsCard label="Approved" count={stats.approved} />
-        <StatsCard label="Pending" count={stats.pending} />
-        <StatsCard label="Denied" count={stats.denied} />
-      </div>
-
-      <div className="dashboard-actions">
-        <Button
-          label="Manage Requests"
-          onClick={() => console.log("Manage Categories")}
-        />
+          <div className="dashboard-actions">
+            <Button
+              label="Manage Requests"
+              onClick={() => console.log("Manage Categories")}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

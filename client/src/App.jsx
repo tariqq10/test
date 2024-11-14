@@ -25,7 +25,6 @@ const App = () => {
     <Router>
       <div className="app">
         <canvas id="canvas" />
-        {/* <AppRouter/> */}
 
         <Routes>
           <Route path="/admin" element={<AdminDashboard />} />
@@ -48,10 +47,8 @@ const App = () => {
         </Routes>
       </div>
     </Router>
-    // </div>
   );
 
 };
 
 export default App;
-

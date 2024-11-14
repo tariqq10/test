@@ -1,23 +1,23 @@
 import { Link} from "react-router-dom"
-
+import '../styles/sidebar.css';
 
 const AdminNavBar = () => {
     return (
-      <nav>
+      <nav className="sidebar">
         <ul>
           <li>
             <Link to="/admin">
-            Home
+            <span className="material-symbols-outlined icon_left">home</span>Home
             </Link>
           </li>
           <li>
             <Link to="/categories">
-            Categories
+            <span className="material-symbols-outlined icon_left">category</span>Categories
             </Link>
           </li>
           <li>
             <Link to="/request">
-            Donation Request
+            <span className="material-symbols-outlined icon_left">volunteer_activism</span>Donation Request
             </Link>
           </li>
         </ul>

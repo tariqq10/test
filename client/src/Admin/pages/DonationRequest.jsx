@@ -30,44 +30,41 @@ const DonationRequest = () => {
     };
 
     return (
-      <div>
-        <AdminNavBar />
-
-        <h2>Pending Donation Requests</h2>
-
-        <table>
-          <thead>
-            <tr>
-              <th>NGO</th>
-              <th>Amount</th>
-              <th>Reason</th>
-              <th>Category</th>
-              <th>Request Date</th>
-              <th>Action</th>
+    <div className="dashboard-main-content">
+      <AdminNavBar />
+      <h2>Pending Donation Requests</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>NGO</th>
+            <th>Amount</th>
+            <th>Reason</th>
+            <th>Category</th>
+            <th>Request Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredRequests.map((request) => (
+            <tr key={request.id}>
+              <td>{request.ngo}</td>
+              <td>{request.amount}</td>
+              <td>{request.reason}</td>
+              <td>{request.category}</td>
+              <td>{request.requestDate}</td>
+              <td>
+                <button onClick={() => handleAction(request.id, "Approve")}>
+                  Approve
+                </button>
+                <button onClick={() => handleAction(request.id, "Reject")}>
+                  Reject
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredRequests.map((request) => (
-              <tr key={request.id}>
-                <td>{request.ngo}</td>
-                <td>{request.amount}</td>
-                <td>{request.reason}</td>
-                <td>{request.category}</td>
-                <td>{request.requestDate}</td>
-                <td>
-                  <button onClick={() => handleAction(request.id, "Approve")}>
-                    Approve
-                  </button>
-                  <button onClick={() => handleAction(request.id, "Reject")}>
-                    Reject
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-
-}
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 export default DonationRequest
