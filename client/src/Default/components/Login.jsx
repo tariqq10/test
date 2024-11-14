@@ -3,6 +3,7 @@ import DefaultDashboard from './DefaultDashboard';
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const navigate = useNavigate()
@@ -17,6 +18,7 @@ const Login = () => {
       password: "",
     },
     onSubmit: async (values) => {
+      console.log('Form submitted', values)
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
         method: "POST",
         headers: {
@@ -26,16 +28,27 @@ const Login = () => {
       });
 
       const data = await res.json();
+      console.log(data)
 
       if (data?.access_token) {
         toast.success(data.message);
 
         localStorage.setItem("session", JSON.stringify(data));
 
-        navigate("/")
-      } else {
-        toast.error(data.message);
-      }
+        const {role} = data.user
+        console.log('User role:', role);
+
+        if(role === "donor"){
+          navigate("/donor")
+        } else if (role === "ngo"){
+          navigate("/ngo")
+        } else if(role === "admin") {
+          navigate("/admin")
+        } else {
+          toast.error("Invalid Email/Password")
+        }
+
+      } 
     }
   })
 
@@ -56,7 +69,7 @@ const Login = () => {
                     placeholder="Email"
                     onChange={formik.handleChange}
                     value={formik.values.email}
-                    helperText={formik.errors.email}
+                    helpertext={formik.errors.email}
                     color={formik.errors.email ? "failure" : undefined}
                   />
                 </div>
@@ -67,7 +80,7 @@ const Login = () => {
                     placeholder="Password"
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    helperText={formik.errors.password}
+                    helpertext={formik.errors.password}
                     color={formik.errors.password ? "failure" : undefined}
                     // className="form-style"
                   />
