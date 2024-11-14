@@ -34,7 +34,7 @@ const AuthNGO = () => {
       organization_description: Yup.string().required("Description is required"),
       email: Yup.string().required("Email is required"),
       password: Yup.string().required("Password is required"),
-      confirmPassword: Yup.string().required("Role is required"),
+      confirm_password: Yup.string().required("Role is required"),
       organization_address: Yup.string().required("Address is required"),
       first_name: Yup.string().required("First name is required"),
       last_name: Yup.string().required("Last name is required"),
@@ -46,7 +46,7 @@ const AuthNGO = () => {
       organization_description: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
       organization_address: "",
       first_name: "",
       last_name: "",
@@ -64,16 +64,17 @@ const AuthNGO = () => {
           organization_description: values.organization_description,
           email: values.email,
           password: values.password,
-          confirmPassword: values.confirmPassword,
+          confirm_password: values.confirm_password,
           organization_address: values.organization_address,
           first_name: values.first_name,
           last_name: values.last_name,
           phone: values.phone,
         }),
       });
-      const data = await res.text();
+      const data = await res.json();
+      console.log(data)
 
-      if (data?.acces_token) {
+      if (data?.access_token) {
         toast.success(data.message);
         localStorage.setItem("session", JSON.stringify(data));
         navigate("/ngo");
@@ -153,12 +154,12 @@ const AuthNGO = () => {
 
                 <input
                   type="password"
-                  name="confirmPassword"
+                  name="confirm_password"
                   placeholder="confirmation Password"
-                  value={formik.values.confirmPassword}
+                  value={formik.values.confirm_password}
                   onChange={formik.handleChange}
-                  helpertext={formik.errors.confirmPassword}
-                  color={formik.errors.confirmPassword ? "failure" : undefined}
+                  helpertext={formik.errors.confirm_password}
+                  color={formik.errors.confirm_password ? "failure" : undefined}
                 />
 
                 <input

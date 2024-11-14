@@ -10,7 +10,7 @@ const Logout = () => {
     localStorage.removeItem("authToken");
 
     // Redirect to the Home or Login page after logout
-    navigate("/");
+    navigate("/login");
   };
 
   return (
