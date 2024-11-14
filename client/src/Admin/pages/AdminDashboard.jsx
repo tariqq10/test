@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/dashboard.css';
+import '../styles/sidebar.css';
 import { useEffect, useState } from 'react';
 import StatsCard from '../components/Dashboard/StatsCard';
 import Button from '../components/UI/Button';
