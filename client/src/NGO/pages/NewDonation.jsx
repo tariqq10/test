@@ -1,82 +1,105 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import {useDispatch, useSelector} from 'react-redux';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios'
+import toast from "react-hot-toast";
+// import {setCategories, setField, clearForm} '../redux/slices/donationSlice'
+
+// title, description, target_amount, status
 
 const NewDonationForm = () => {
-  // State to track form inputs
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const dispatch = useDispatch();
+  const {categories} = useSelector(state => state.donationRequest)
 
-  // Handle input changes
-  const handleCategoryChange = (e) => setCategory(e.target.value);
-  const handleDescriptionChange = (e) => setDescription(e.target.value);
-  const handleAmountChange = (e) => setAmount(e.target.value);
-  const handleDateChange = (e) => setDate(e.target.value);
-
-  // Form submission handler
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Basic validation (you can extend this as needed)
-    if (!category || !description || !amount || !date) {
-      alert("Please fill out all fields");
-      return;
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try{
+        const response = await axios.get('');
+        dispatch(setCategories(response.data))
+      } catch (err) {
+        console.error('Failed to fetch categories:', err);
+      }
     }
+    fetchCategories()
+  }, [dispatch])
 
-    // Here we would typically send the form data to an API or store it
-    console.log({
-      category,
-      description,
-      amount,
-      date,
-    });
+  const formik = useFormik({
+    initialValues:{
+      title: '',
+      description:'',
+      categoryName:'',
+      targetAmount:'',
+      status:'',
+    },
+    validationSchema:Yup.object().shape({
+      title: Yup.string().required("Title is required"),
+      description: Yup.string().required("Description is required"),
+      categoryName: Yup.string().required("Category Name is required"),
+      targetAmount: Yup.string().required("Amount is required").positive("Target must be a positive number"),
+      status: Yup.string().required("Status is required")
+    }),
+    onSubmit: async (values) => {
+      try{
+        const requestData = {
+          title: values.title,
+          description: values.description,
+          category_name: values.categoryName,
+          target_amount: parseFloat(values.targetAmount),
+          status: values.status
+        };
 
-    // Set submission success message
-    setIsSubmitted(true);
+        const response = await axios.post('')
 
-    // Reset form (optional)
-    setCategory("");
-    setDescription("");
-    setAmount("");
-    setDate("");
-  };
+        dispatch(clearForm());
+
+        toast.success('Donation request created successfully!', {
+          position: toast.POSITION.TOP_RIGHT
+        })
+      } catch(err){
+        dispatch(setError('Error creating donation request'))
+
+
+        toast.error('Error creating donation request. Please try again.',{
+          position: toast.POSITION.TOP_RIGHT
+        })
+      }
+    }
+  })
+
 
   return (
     <div style={styles.formContainer}>
       <Navbar/>
-      <h2>New Donation</h2>
-      {isSubmitted && <p style={styles.successMessage}>Your donation has been submitted!</p>}
-      <form onSubmit={handleSubmit}>
-        <div style={styles.formGroup}>
-          <label htmlFor="category" style={styles.label}>Donation Category</label>
-          <select
-            id="category"
-            value={category}
-            onChange={handleCategoryChange}
-            required
-            style={styles.input}
-          >
-            <option value="">Select category</option>
-            <option value="Food">Food</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Medical">Medical</option>
-            <option value="Education">Education</option>
-          </select>
-        </div>
+      <h2>Create donation Request</h2>
+      {formError && <div style={{color: 'red'}}>{formError}</div>}
+      <form onSubmit={formik.handleSubmit}>
 
         <div style={styles.formGroup}>
           <label htmlFor="description" style={styles.label}>Description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={handleDescriptionChange}
-            required
+          <input
+            type="text"
+            name="title"
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            placeholder="Enter Title"
+            style={styles.textarea}
+          />
+        </div>
+        <div style={styles.formGroup}>
+          <label htmlFor="description" style={styles.label}>Description</label>
+          <input
+            type="text"
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
             placeholder="Enter a brief description of your donation"
             style={styles.textarea}
-          ></textarea>
+          />
         </div>
+
+        
 
         <div style={styles.formGroup}>
           <label htmlFor="amount" style={styles.label}>Amount</label>

@@ -61,7 +61,7 @@ const Auth = () => {
       });
       const data = await res.json();
 
-      if (data?.acces_token) {
+      if (data?.access_token) {
         toast.success(data.message);
         localStorage.setItem("session", JSON.stringify(data));
         navigate("/donor");
