@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Home from "./home";
-import Profile from "./profile";
+import Profile from "../Donor-app/profile";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import DonationPage from "./DonationPage";
@@ -31,7 +31,7 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/donor" element={<Home />} />
           <Route path="/donor-profile" element={<Profile />} />
           <Route path="/make-donation" element={<DonationPage />} />{" "}
           {/* Route for donation page */}

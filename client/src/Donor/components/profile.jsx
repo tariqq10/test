@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./assets/styles/profile.css"; // Corrected path
+import "../styles/profile.css"; // Corrected path
+import NavBar from "./NavBar";
 
-const Profile = () => {
+const DonorProfile = () => {
   const [donor, setDonor] = useState({});
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,34 +56,37 @@ const Profile = () => {
 
   return (
     <div className="profile">
-      <h2>Donor Profile</h2>
-      <form onSubmit={handleProfileUpdate}>
-        <label>Name:</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button type="submit">Update Profile</button>
-      </form>
+      <div>
+        <NavBar/>
+        <h2>Donor Profile</h2>
+        <form onSubmit={handleProfileUpdate}>
+          <label>Name:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <button type="submit">Update Profile</button>
+        </form>
 
-      <h3>Your Donations</h3>
-      <ul>
-        {donations.map((donation) => (
-          <li key={donation.donations_id}>
-            ${donation.amount} donated on{" "}
-            {new Date(donation.created_at).toLocaleDateString()}
-          </li>
-        ))}
-      </ul>
+        <h3>Your Donations</h3>
+        <ul>
+          {donations.map((donation) => (
+            <li key={donation.donations_id}>
+              ${donation.amount} donated on{" "}
+              {new Date(donation.created_at).toLocaleDateString()}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
 
-export default Profile;
+export default DonorProfile;

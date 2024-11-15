@@ -29,39 +29,50 @@ const Auth = () => {
 
   const formik = useFormik({
     validationSchema: Yup.object().shape({
+      role: Yup.string().required("Role is required"),
       first_name: Yup.string().required("First name is required"),
       last_name: Yup.string().required("Last name is required"),
       email: Yup.string().required("Email is required"),
       phone: Yup.string().required("Phone is required"),
       password: Yup.string().required("Password is required"),
-      confirmPassword: Yup.string().required("Role is required")
+      confirm_password: Yup.string().required("Role is required")
     }),
     initialValues: {
+      role:"",
       first_name: "",
       last_name: "",
       email: "",
       phone: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
     },
     onSubmit: async (values) => {
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users` / register, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          role: values.role,
           first_name: values.first_name,
           last_name: values.last_name,
           email: values.email,
           phone: values.phone,
           password: values.password,
-          confirmPassword: values.confirmPassword,
+          confirm_password: values.confirm_password,
         }),
       });
-      const data = await res.json();
 
-      if (data?.acces_token) {
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("Server error:", errorData); // Log the error response
+        toast.error(errorData.message || "Registration failed.");
+        return;
+      }
+      const data = await res.json();
+      console.log(data)
+
+      if (data?.access_token) {
         toast.success(data.message);
         localStorage.setItem("session", JSON.stringify(data));
         navigate("/donor");
@@ -84,11 +95,20 @@ const Auth = () => {
               <form onSubmit={formik.handleSubmit}>
                 <input
                   type="text"
-                  name= "first_name"
+                  name="role"
+                  placeholder="Role"
+                  value={formik.values.role}
+                  onChange={formik.handleChange}
+                  helpertext={formik.errors.first_name}
+                  color={formik.errors.role ? "failure" : undefined}
+                />
+                <input
+                  type="text"
+                  name="first_name"
                   placeholder="First Name"
                   value={formik.values.first_name}
                   onChange={formik.handleChange}
-                  // helpertext={formik.errors.first_name}
+                  helpertext={formik.errors.first_name}
                   color={formik.errors.first_name ? "failure" : undefined}
                 />
                 <input
@@ -97,7 +117,7 @@ const Auth = () => {
                   placeholder="Last Name"
                   value={formik.values.last_name}
                   onChange={formik.handleChange}
-                  // helpertext={formik.errors.last_name}
+                  helpertext={formik.errors.last_name}
                   color={formik.errors.last_name ? "failure" : undefined}
                 />
 
@@ -107,7 +127,7 @@ const Auth = () => {
                   placeholder="Email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
-                  // helpertext={formik.errors.email}
+                  helpertext={formik.errors.email}
                   color={formik.errors.email ? "failure" : undefined}
                 />
 
@@ -117,7 +137,7 @@ const Auth = () => {
                   placeholder="Phone"
                   value={formik.values.phone}
                   onChange={formik.handleChange}
-                  // helpertext={formik.errors.phone}
+                  helpertext={formik.errors.phone}
                   color={formik.errors.phone ? "failure" : undefined}
                 />
 
@@ -127,18 +147,18 @@ const Auth = () => {
                   placeholder="Password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
-                  // helpertext={formik.errors.password}
+                  helpertext={formik.errors.password}
                   color={formik.errors.password ? "failure" : undefined}
                 />
 
                 <input
                   type="password"
-                  name="confirmPassword"
+                  name="confirm_password"
                   placeholder="confirmation Password"
-                  value={formik.values.confirmPassword}
+                  value={formik.values.confirm_password}
                   onChange={formik.handleChange}
-                  // helpertext={formik.errors.confirmPassword}
-                  color={formik.errors.confirmPassword ? "failure" : undefined}
+                  helpertext={formik.errors.confirm_password}
+                  color={formik.errors.confirm_password ? "failure" : undefined}
                 />
                 <button type="submit">Register</button>
               </form>
