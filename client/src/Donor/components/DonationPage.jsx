@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./assets/styles/DonationPage.css"; // Optional: Custom styles for the donation page
+import "../styles/DonationPage.css"; // Optional: Custom styles for the donation page
+import NavBar from "./NavBar";
 
 const DonationPage = () => {
   const [amount, setAmount] = useState("");
@@ -29,6 +30,7 @@ const DonationPage = () => {
 
   return (
     <div className="donation-page">
+      <NavBar/>
       <h2>Make a Donation</h2>
       <input
         type="text"

@@ -1,5 +1,5 @@
 import React from "react";
-import "./assets/styles/NgoCard.css";
+import "../styles/NgoCard.css";
 
 const NgoCard = ({ ngo }) => {
   return (
