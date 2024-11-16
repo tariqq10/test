@@ -103,10 +103,21 @@ const AuthNGO = () => {
                   value={formik.values.role}
                   onChange={formik.handleChange}
                   helpertext={formik.errors.role}
-                  color={
-                    formik.errors.role ? "failure" : undefined
-                  }
+                  color={formik.errors.role ? "failure" : undefined}
                 />
+
+                <select
+                  type="text"
+                  name="role"
+                  placeholder="Role"
+                  value={formik.values.role}
+                  onChange={formik.handleChange}
+                  helpertext={formik.errors.first_name}
+                  color={formik.errors.role ? "failure" : undefined}
+                >
+                  <option value="ngo">NGO</option>
+                  <option value="donor">Donor</option>
+                </select>
                 <input
                   type="text"
                   name="organization_name"

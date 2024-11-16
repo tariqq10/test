@@ -93,7 +93,7 @@ const Auth = () => {
             <div className="center-wrap">
               <h4>Register</h4>
               <form onSubmit={formik.handleSubmit}>
-                <input
+                <select
                   type="text"
                   name="role"
                   placeholder="Role"
@@ -101,7 +101,10 @@ const Auth = () => {
                   onChange={formik.handleChange}
                   helpertext={formik.errors.first_name}
                   color={formik.errors.role ? "failure" : undefined}
-                />
+                >
+                  <option value="ngo">NGO</option>
+                  <option value="donor">Donor</option>
+                </select>
                 <input
                   type="text"
                   name="first_name"
