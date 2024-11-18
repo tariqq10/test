@@ -104,7 +104,6 @@ const Auth = () => {
                   <option value="ngo">NGO</option>
                   <option value="donor">Donor</option>
                 </select>
-               
                 <input
                   type="text"
                   name="first_name"

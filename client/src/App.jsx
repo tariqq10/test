@@ -20,7 +20,7 @@ import Profile from './NGO/pages/Profile';
 import Logout from './NGO/pages/Logout';
 import DonorHome from './Donor/components/home';
 import DonationPage from './Donor/components/DonationPage';
-import DonorProfile from './Donor/components/profile';
+// import DonorProfile from './Donor/components/profile';
 
 const App = () => {
 
@@ -48,7 +48,7 @@ const App = () => {
           <Route path="/logout" element={<Logout/>} />
           <Route path='/donor' element={<DonorHome/>}/>
           <Route path="/make-donation" element={<DonationPage/>} />
-          <Route path="/donor-profile" element={<DonorProfile/>}/>
+          {/* <Route path="/donor-profile" element={<DonorProfile/>}/> */}
           {/* New route */}
         </Routes>
       </div>

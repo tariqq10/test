@@ -108,14 +108,15 @@ const AuthNGO = () => {
             <div className="center-wrap">
               <h4>Register</h4>
               <form onSubmit={formik.handleSubmit}>
+
+
                 <select
                   type="text"
                   name="role"
                   value={formik.values.role}
-                  onChange={handleRole}
+                  onChange={formik.handleChange}
                   helpertext={formik.errors.first_name}
                   color={formik.errors.role ? "failure" : undefined}
-                >
                   <option value="" disabled>
                     Select Role
                   </option>
