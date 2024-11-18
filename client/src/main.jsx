@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import 'font-awesome/css/font-awesome.min.css';
 import 'font-awesome/css/font-awesome.min.css';
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -11,6 +12,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <Toaster position='top-right'/>
     <App />
   </StrictMode>,
 )

@@ -33,7 +33,7 @@ const Auth = () => {
       email: Yup.string().required("Email is required"),
       phone: Yup.string().required("Phone is required"),
       password: Yup.string().required("Password is required"),
-      confirm_password: Yup.string().required("Role is required"),
+      confirm_password: Yup.string().required("Role is required").oneOf([Yup.ref('password'), null], "Passwords must match"),
     }),
     initialValues: {
       role: "",
@@ -80,6 +80,17 @@ const Auth = () => {
     },
   });
 
+  const handleRole = (event) => {
+    const selectedRole = event.target.value;
+
+
+    formik.setFieldValue('role', selectedRole);
+
+    if (selectedRole === "ngo"){
+      navigate("/users/ngo")
+    }
+  }
+
   return (
     <div className="auth-container">
       <DefaultDashboard />
@@ -91,15 +102,19 @@ const Auth = () => {
             <div className="center-wrap">
               <h4>Register</h4>
               <form onSubmit={formik.handleSubmit}>
-                <input
+                <select
                   type="text"
                   name="role"
-                  placeholder="Role"
                   value={formik.values.role}
-                  onChange={formik.handleChange}
+                  onChange={handleRole}
                   helpertext={formik.errors.first_name}
                   color={formik.errors.role ? "failure" : undefined}
-                />
+                >
+                  <option value="" disabled>Select Role</option>
+                  <option value="ngo">NGO</option>
+                  <option value="donor">Donor</option>
+                </select>
+
                 <input
                   type="text"
                   name="first_name"
