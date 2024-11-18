@@ -31,7 +31,7 @@ const Navbar = () => {
         </li>
         <li>
           <Link
-            to="/profile"
+            // to="/profile"
             style={{ color: "white", textDecoration: "none" }}
           >
             Profile
