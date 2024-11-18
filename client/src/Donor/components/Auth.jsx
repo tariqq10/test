@@ -34,6 +34,7 @@ const Auth = () => {
       email: Yup.string().required("Email is required"),
       phone: Yup.string().required("Phone is required"),
       password: Yup.string().required("Password is required"),
+
       confirm_password: Yup.string().required("Role is required"),
     }),
     initialValues: {
@@ -69,6 +70,7 @@ const Auth = () => {
         return;
       }
       const data = await res.json();
+
       console.log(data);
 
       if (data?.access_token) {
@@ -104,6 +106,15 @@ const Auth = () => {
                   <option value="ngo">NGO</option>
                   <option value="donor">Donor</option>
                 </select>
+                <input
+                  type="text"
+                  name="role"
+                  placeholder="Role"
+                  value={formik.values.role}
+                  onChange={formik.handleChange}
+                  helpertext={formik.errors.first_name}
+                  color={formik.errors.role ? "failure" : undefined}
+                />
                 <input
                   type="text"
                   name="first_name"

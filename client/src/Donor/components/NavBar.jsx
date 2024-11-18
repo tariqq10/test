@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/NavBar.css";
+
 import Logout from "./logout";
 
 const NavBar = () => {
   return (
     <nav className="navbar">
       <div className="nav-links">
+
         <ul>
           <li><Link to="/donor" className="nav-link">
             Home
