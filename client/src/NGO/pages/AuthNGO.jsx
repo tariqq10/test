@@ -84,6 +84,18 @@ const AuthNGO = () => {
     },
   });
 
+  const handleRole = (event) => {
+    const selectedRole = event.target.value;
+
+    formik.setFieldValue("role", selectedRole);
+
+    if (selectedRole === "donor") {
+      navigate("/register");
+    }
+  };
+
+  
+
 
   return (
     <div className="auth-container">
@@ -92,32 +104,26 @@ const AuthNGO = () => {
       <div className="card-3d-wrap mx-auto">
         <div className="card-3d-wrapper">
           {/* Register Card */}
-          <div className="card-back">
+          <div >
             <div className="center-wrap">
               <h4>Register</h4>
               <form onSubmit={formik.handleSubmit}>
-                <input
-                  type="text"
-                  name="role"
-                  placeholder="Role"
-                  value={formik.values.role}
-                  onChange={formik.handleChange}
-                  helpertext={formik.errors.role}
-                  color={formik.errors.role ? "failure" : undefined}
-                />
+
 
                 <select
                   type="text"
                   name="role"
-                  placeholder="Role"
                   value={formik.values.role}
                   onChange={formik.handleChange}
                   helpertext={formik.errors.first_name}
                   color={formik.errors.role ? "failure" : undefined}
-                >
+                  <option value="" disabled>
+                    Select Role
+                  </option>
                   <option value="ngo">NGO</option>
                   <option value="donor">Donor</option>
                 </select>
+
                 <input
                   type="text"
                   name="organization_name"

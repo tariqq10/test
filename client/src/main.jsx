@@ -6,6 +6,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import {Provider} from 'react-redux'
 import {store} from './Donor/store.js'
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -18,3 +19,7 @@ createRoot(document.getElementById("root")).render(
     </Provider>
   </StrictMode>
 );
+    <Toaster position='top-right'/>
+    <App />
+  </StrictMode>,
+)
