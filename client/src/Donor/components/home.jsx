@@ -28,6 +28,7 @@ const DonorHome = () => {
   return (
     <div className="home">
       <NavBar isHome={true} />
+
       <div className="ngo-cards">
         <h2>Approved donation requests</h2>
         {approvedDonations.length > 0 ? (

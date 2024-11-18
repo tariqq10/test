@@ -1,49 +1,58 @@
-import { useEffect, useState } from "react"
-import CategoryItem from "./CategoryItem"
-
-
+import { useEffect, useState } from "react";
+import CategoryItem from "./CategoryItem";
 
 const CategoriesList = () => {
-    const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  
+  const handleFilter = (category) => {
+    const filtered = categories.filter((cat) => cat.name === category);
+    setFilteredRequests(filtered);
+  };
 
-    const handleFilter = (category) => {
-      const filtered = requests.filter((req) => req.category === category);
-      setFilteredRequests(filtered);
-    };
+  useEffect(() => {
+    const session = JSON.parse(localStorage.getItem("session"));
+    if (!session) return;
 
-    useEffect(() => {
-        const session = JSON.parse(localStorage.getItem("session"))
+    const accessToken = session.access_token; 
+    fetch("http://127.0.0.1:5000/categories", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`, 
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setCategories(data); 
+        setFilteredRequests(data); 
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
 
-        if (!session) return;
-
-        fetch({},{
-            method:"GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        .then((res) => res.json())
-        .then((data) => setCategories(data))
-    }, [])
-
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <button onClick={() => handleFilter("Education")}>Education</button>
-          <button onClick={() => handleFilter("Healthcare")}>
-            Health Care
-          </button>
-          <button onClick={() => handleFilter("")}>All</button>
-        </div>
-        {categories.length > 0 ? (
-          category.map((category) => (
-            <CategoryItem key={category.id} {...category} />
-          ))
-        ) : (
-          <p>No categories Available on the backend </p>
-        )}
+        <button onClick={() => handleFilter("Education")}>Education</button>
+        <button onClick={() => handleFilter("Healthcare")}>Health Care</button>
+        <button onClick={() => handleFilter("")}>All</button>
       </div>
-    );
+      {filteredRequests.length > 0 ? (
+        filteredRequests.map((category) => (
+          <CategoryItem key={category.id} {...category} />
+        ))
+      ) : (
+        <p>No categories available on the backend</p>
+      )}
+    </div>
+  );
+};
 
-}
-export default CategoriesList
+export default CategoriesList;

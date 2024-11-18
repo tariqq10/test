@@ -24,7 +24,6 @@ const setTheme = (theme) => {
 };
 
 const Auth = () => {
-
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -35,10 +34,11 @@ const Auth = () => {
       email: Yup.string().required("Email is required"),
       phone: Yup.string().required("Phone is required"),
       password: Yup.string().required("Password is required"),
-      confirm_password: Yup.string().required("Role is required")
+
+      confirm_password: Yup.string().required("Role is required"),
     }),
     initialValues: {
-      role:"",
+      role: "",
       first_name: "",
       last_name: "",
       email: "",
@@ -70,7 +70,8 @@ const Auth = () => {
         return;
       }
       const data = await res.json();
-      console.log(data)
+
+      console.log(data);
 
       if (data?.access_token) {
         toast.success(data.message);
@@ -105,6 +106,15 @@ const Auth = () => {
                   <option value="ngo">NGO</option>
                   <option value="donor">Donor</option>
                 </select>
+                <input
+                  type="text"
+                  name="role"
+                  placeholder="Role"
+                  value={formik.values.role}
+                  onChange={formik.handleChange}
+                  helpertext={formik.errors.first_name}
+                  color={formik.errors.role ? "failure" : undefined}
+                />
                 <input
                   type="text"
                   name="first_name"
