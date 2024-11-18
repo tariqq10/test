@@ -48,7 +48,10 @@ const Login = () => {
           toast.error("Invalid Email/Password")
         }
 
-      } 
+      } else {
+        console.log("Error message:",data.message)
+        toast.error(data.message)
+      }
     }
   })
 

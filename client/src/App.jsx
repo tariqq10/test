@@ -27,6 +27,7 @@ import OrganizationList from './Admin/components/OrganizationManagement/Organiza
 import DonorHome from './Donor/components/home';
 import DonationPage from './Donor/components/DonationPage';
 import DonorProfile from './Donor/components/profile';
+import Requests from './Donor/components/donationRequest';
 // import DonorProfile from './Donor/components/profile';
 
 const App = () => {
@@ -63,6 +64,7 @@ const App = () => {
           <Route path="/admin/organizations/add" element={<OrganizationForm />} />
           <Route path="/logout" element={<Logout/>} />
           <Route path='/donor' element={<DonorHome/>}/>
+          <Route path="/requests" element={<Requests/>}/>
           <Route path="/make-donation" element={<DonationPage/>} />
           <Route path="/donor-profile" element={<DonorProfile/>}/>
           
