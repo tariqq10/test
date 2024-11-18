@@ -5,38 +5,51 @@ import '../styles/requestManagement.css';
 const DonationRequest = () => {
   const [requests, setRequests] = useState([]);
 
+  
+  const accessToken = localStorage.getItem('accessToken'); 
+
   useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const response = await fetch('/api/requests');
-        if (response.ok) {
-          const data = await response.json();
-          setRequests(data.requests);
-        } else {
-          // Use fallback dummy data if the API response is not OK
-          setRequests([
-            { id: "1", ngo: "NGO-a", amount: 3000, reason: "Sending kids to school", category: "Education", requestDate: "10/05/2023", status: 'pending' },
-            { id: "2", ngo: "NGO-b", amount: 1000, reason: "Medical supply", category: "Healthcare", requestDate: "05/03/2024", status: 'pending' }
-          ]);
+    
+    if (accessToken) {
+      const fetchRequests = async () => {
+        try {
+          const response = await fetch('http://127.0.0.1:5000/requests', {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setRequests(data.requests);
+          } else {
+            console.error("Failed to fetch donation requests:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error fetching requests:", error);
         }
-      } catch (error) {
-        console.error("Error fetching requests:", error);
-        // Use fallback dummy data if the fetch fails
-        setRequests([
-          { id: "1", ngo: "NGO-a", amount: 3000, reason: "Sending kids to school", category: "Education", requestDate: "10/05/2023", status: 'pending' },
-          { id: "2", ngo: "NGO-b", amount: 1000, reason: "Medical supply", category: "Healthcare", requestDate: "05/03/2024", status: 'pending' }
-        ]);
-      }
-    };
-    fetchRequests();
-  }, []);
+      };
+      fetchRequests();
+    } else {
+      console.error("No access token found.");
+    }
+  }, [accessToken]);
 
   const handleApprove = async (id) => {
     try {
-      await fetch(`/api/requests/${id}/approve`, { method: 'POST' });
-      setRequests(requests.map(request => 
-        request.id === id ? { ...request, status: 'approved' } : request
-      ));
+      const response = await fetch(`http://127.0.0.1:5000/approvals/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.ok) {
+        setRequests(requests.map(request =>
+          request.id === id ? { ...request, status: 'approved' } : request
+        ));
+      } else {
+        console.error("Failed to approve request:", response.statusText);
+      }
     } catch (error) {
       console.error("Error approving request:", error);
     }
@@ -44,10 +57,21 @@ const DonationRequest = () => {
 
   const handleReject = async (id) => {
     try {
-      await fetch(`/api/requests/${id}/reject`, { method: 'POST' });
-      setRequests(requests.map(request => 
-        request.id === id ? { ...request, status: 'rejected' } : request
-      ));
+      const response = await fetch(`http://127.0.0.1:5000/approvals/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ status: 'rejected' }), 
+      });
+
+      if (response.ok) {
+        setRequests(requests.map(request =>
+          request.id === id ? { ...request, status: 'rejected' } : request
+        ));
+      } else {
+        console.error("Failed to reject request:", response.statusText);
+      }
     } catch (error) {
       console.error("Error rejecting request:", error);
     }

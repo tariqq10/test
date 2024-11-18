@@ -1,24 +1,34 @@
-// src/Admin/components/OrganizationManagement/OrganizationForm.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const OrganizationForm = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Replaced useHistory with useNavigate
-  
+  const navigate = useNavigate();
+
   const [organization, setOrganization] = useState({
     name: '',
     contactInfo: '',
     address: '',
   });
 
+  const token = localStorage.getItem('access_token'); 
+
+  if (!token) {
+    navigate('/login'); 
+    return null; 
+  }
+
+  
+  const headers = {
+    Authorization: `Bearer ${token}`, 
+  };
+
   useEffect(() => {
     if (id) {
-      // Fetch existing organization details to edit
       const fetchOrganization = async () => {
         try {
-          const response = await axios.get(`/api/organizations/${id}`);
+          const response = await axios.get(`http://127.0.0.1:5000/organizations/${id}`, { headers });
           setOrganization(response.data);
         } catch (error) {
           console.error('Error fetching organization:', error);
@@ -41,13 +51,13 @@ const OrganizationForm = () => {
 
     try {
       if (id) {
-        // Update existing organization
-        await axios.put(`/api/organizations/${id}`, organization);
+        
+        await axios.patch(`http://127.0.0.1:5000/organizations/${id}`, organization, { headers });
       } else {
-        // Add new organization
-        await axios.post('/api/organizations', organization);
+        
+        await axios.post('http://127.0.0.1:5000/organizations', organization, { headers });
       }
-      navigate('/admin/organizations'); // Redirect after submit (replaces history.push)
+      navigate('/admin/organizations'); 
     } catch (error) {
       console.error('Error saving organization:', error);
     }
