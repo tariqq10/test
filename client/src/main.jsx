@@ -15,11 +15,9 @@ import { Toaster } from 'react-hot-toast';
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
+    <Toaster position='top-right'/>
       <App />
     </Provider>
   </StrictMode>
 );
-    <Toaster position='top-right'/>
-    <App />
-  </StrictMode>,
-)
+

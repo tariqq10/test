@@ -1,59 +1,50 @@
 import React, { useState } from "react";
 import "../styles/DonationPage.css"; // Optional: Custom styles for the donation page
 import NavBar from "./NavBar";
+import { postDonation } from "../slices/charity";
+import { useDispatch } from "react-redux";
+import {setDonations} from "../slices/donationSlice"
 
 const DonationPage = () => {
   const [amount, setAmount] = useState("");
-  const [userId, setUserId] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useDispatch()
 
-  const handleDonationSubmit = async () => {
-    const newDonation = {
-      user_id: userId,
-      amount: parseFloat(amount),
-      category_id: selectedCategory,
-      created_at: new Date().toISOString(),
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!amount || amount <= 0){
+      setError('Please enter a valid donation amount.')
+      return;
+    }
 
     try {
-      const response = await fetch("/api/donations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newDonation),
-      });
-      const data = await response.json();
-      // Handle the response, for example, show success message, reset form, etc.
+      const donationData = {
+        amount: parseFloat(amount),
+        donation_request_id: donationRequest.donation_request_id,
+      }
+      const response = await postDonation(donationData);
+      setAmount("")
+      setError("")
+      alert("Donation Seccessful!")
+      dispatch(setDonations(response.data.donations))
     } catch (error) {
-      console.error("Error submitting donation", error);
+      setError("Failed to make donation, Please try again")
     }
-  };
-
+  }
+    
   return (
     <div className="donation-page">
       <NavBar/>
       <h2>Make a Donation</h2>
-      <input
-        type="text"
-        placeholder="User ID"
-        value={userId}
-        onChange={(e) => setUserId(e.target.value)}
-      />
       <input
         type="number"
         placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
-      <select
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-      >
-        <option value="">Select Category</option>
-        {/* Optionally, you can populate categories from an API */}
-        <option value="1">Category 1</option>
-        <option value="2">Category 2</option>
-      </select>
-      <button onClick={handleDonationSubmit}>Submit Donation</button>
+     
+      <button type="submit" >Donate</button>
     </div>
   );
 };
