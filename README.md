@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+=======
 # Online Charity Management
 The local charity Organizations are among the most adversely affected groups by the Covid 19 Pandemic. Majority of the donors are losing their ability to support these organizations because of the economic impact left behind by the pandemic. Furthermore, finding new donors is also an enormous challenge, leaving the thousands of beneficiaries impoverished. Charity is an act of kindness where someone donates what they have to the less fortunate.
 
@@ -1049,3 +1059,4 @@ Authorization: Bearer <your_jwt_token>
    ```bash
    git clone https://github.com/yourusername/flask-charity-management-api.git
    cd flask-charity-management-api
+>>>>>>> e2d7c2b4062dbb02856862f5a248682dded3470d

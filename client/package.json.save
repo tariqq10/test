@@ -11,9 +11,13 @@
     "start": "vite"
   },
   "dependencies": {
+<<<<<<< HEAD:package.json
+    "axios": "^1.7.7",
+=======
     "@reduxjs/toolkit": "^2.3.0",
     "font-awesome": "^4.7.0",
     "formik": "^2.4.6",
+>>>>>>> e2d7c2b4062dbb02856862f5a248682dded3470d:client/package.json.save
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
