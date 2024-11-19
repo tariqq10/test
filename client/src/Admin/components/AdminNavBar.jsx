@@ -25,7 +25,7 @@ const AdminNavBar = () => {
                         <span className="material-symbols-outlined icon_left">group</span>User Management
                     </Link>
                 </li>
-                {/* Organization Management Links */}
+                
                 <li>
                     <Link to="/admin/organizations">
                         <span className="material-symbols-outlined icon_left">corporate_fare</span>Organization Management
@@ -41,4 +41,4 @@ const AdminNavBar = () => {
     );
 };
 
-export default AdminNavBar; 
+export default AdminNavBar;
