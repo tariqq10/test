@@ -10,6 +10,17 @@ import toast from "react-hot-toast";
 // title, description, target_amount, status
 
 const NewDonationForm = () => {
+  const dispatch = useDispatch();
+  // const {categories} = useSelector(state => state.donationRequest)
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try{
+        const response = await axios.get('API_URL_FOR_CATEGORIES');
+        dispatch(setCategories(response.data))
+      } catch (err) {
+        console.error('Failed to fetch categories:', err);
+      }
   // State to track form inputs
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -28,6 +39,7 @@ const NewDonationForm = () => {
   const handleOrgNameChange = (e) => setOrgName(e.target.value);
   const handleOrgEmailChange = (e) => setOrgEmail(e.target.value);
   const handleOrgAddressChange = (e) => setOrgAddress(e.target.value);
+    }
 
   // Form submission handler
   const handleSubmit = (e) => {
@@ -38,7 +50,44 @@ const NewDonationForm = () => {
       alert("Please fill out all fields");
       return;
     }
+  }
+    fetchCategories()
+  }, [dispatch]);
 
+  const formik = useFormik({
+    initialValues:{
+      title: '',
+      description:'',
+      categoryName:'',
+      targetAmount:'',
+      status:'',
+    },
+    validationSchema:Yup.object().shape({
+      title: Yup.string().required("Title is required"),
+      description: Yup.string().required("Description is required"),
+      categoryName: Yup.string().required("Category Name is required"),
+      targetAmount: Yup.string().required("Amount is required").positive("Target must be a positive number"),
+      status: Yup.string().required("Status is required")
+    }),
+    onSubmit: async (values) => {
+      try{
+        const requestData = {
+          title: values.title,
+          description: values.description,
+          category_name: values.categoryName,
+          target_amount: parseFloat(values.targetAmount),
+          status: values.status
+        };
+
+        const response = await axios.post('')
+
+        dispatch(clearForm());
+
+        toast.success('Donation request created successfully!', {
+          position: toast.POSITION.TOP_RIGHT
+        })
+      } catch(err){
+        dispatch(setError('Error creating donation request'))
     // Here we would typically send the form data to an API or store it
     console.log({
       category,
@@ -50,18 +99,14 @@ const NewDonationForm = () => {
       orgAddress,
     });
 
-    // Set submission success message
-    setIsSubmitted(true);
 
-    // Reset form (optional)
-    setCategory("");
-    setDescription("");
-    setAmount("");
-    setDate("");
-    setOrgName("");
-    setOrgEmail("");
-    setOrgAddress("");
-  };
+        toast.error('Error creating donation request. Please try again.',{
+          position: toast.POSITION.TOP_RIGHT
+        })
+      }
+    }
+  })
+
 
   return (
     <div style={styles.formContainer}>
@@ -94,6 +139,84 @@ const NewDonationForm = () => {
         </div>
 
         
+
+        <div style={styles.formGroup}>
+          <label htmlFor="amount" style={styles.label}>Amount</label>
+          <input
+            type="number"
+            id="amount"
+            value={amount}
+            onChange={handleAmountChange}
+            required
+            placeholder="Amount of donation"
+            style={styles.input}
+          />
+        </div>
+
+        <div style={styles.formGroup}>
+          <label htmlFor="date" style={styles.label}>Donation Date</label>
+          <input
+            type="date"
+            id="date"
+            value={date}
+            onChange={handleDateChange}
+            required
+            style={styles.input}
+          />
+        </div>
+
+        <button type="submit" style={styles.submitButton}>Submit Donation</button>
+      </form>
+    // Reset form (optional)
+    setCategory("");
+    setDescription("");
+    setAmount("");
+    setDate("");
+    setOrgName("");
+    setOrgEmail("");
+    setOrgAddress("");
+    </div>
+  )
+  
+
+  return (
+    <div style={styles.pageContainer}>
+      <div style={styles.header}>
+        <h2>Donation Appeal Form</h2>
+      </div>
+      <div style={styles.formContainer}>
+        {isSubmitted && <p style={styles.successMessage}>Your donation has been submitted!</p>}
+        <form onSubmit={handleSubmit} style={styles.form}>
+          {/* Donation Category */}
+          <div style={styles.formGroup}>
+            <label htmlFor="category" style={styles.label}>Donation Category:</label>
+            <select
+              id="category"
+              value={category}
+              onChange={handleCategoryChange}
+              required
+              style={styles.input}
+            >
+              <option value="">Select category</option>
+              <option value="Food">Food</option>
+              <option value="Clothing">Clothing</option>
+              <option value="Medical">Medical</option>
+              <option value="Education">Education</option>
+            </select>
+          </div>
+
+          {/* Description */}
+          <div style={styles.formGroup}>
+            <label htmlFor="description" style={styles.label}>Description:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={handleDescriptionChange}
+              required
+              placeholder="Enter a brief description of your donation"
+              style={styles.textarea}
+            ></textarea>
+          </div>
 
           {/* Amount */}
           <div style={styles.formGroup}>
@@ -169,7 +292,7 @@ const NewDonationForm = () => {
       </div>
     </div>
   );
-};
+}
 
 // Inline styles object
 const styles = {
