@@ -1,4 +1,3 @@
-
 import React from 'react';
 import AdminNavBar from '../components/AdminNavBar';
 import OrganizationList from '../components/OrganizationManagement/OrganizationList';

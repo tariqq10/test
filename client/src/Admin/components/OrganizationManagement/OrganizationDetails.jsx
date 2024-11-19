@@ -12,7 +12,6 @@ const OrganizationDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  
   useEffect(() => {
     const fetchOrganization = async () => {
       const token = localStorage.getItem('accessToken'); 
@@ -40,7 +39,6 @@ const OrganizationDetails = () => {
     fetchOrganization();
   }, [id]);
 
-  
   const handleDelete = async () => {
     const token = localStorage.getItem('accessToken'); 
     if (!token) {
@@ -77,11 +75,7 @@ const OrganizationDetails = () => {
           <p><strong>Name:</strong> {organization.name}</p>
           <p><strong>Contact Info:</strong> {organization.contactInfo}</p>
           <p><strong>Address:</strong> {organization.address}</p>
-
-          
           <OrganizationForm organization={organization} setOrganization={setOrganization} />
-
-          
           <button onClick={handleDelete} style={{ color: 'red', marginTop: '20px' }}>
             Delete Organization
           </button>

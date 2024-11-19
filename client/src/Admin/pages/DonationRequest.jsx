@@ -5,11 +5,11 @@ import '../styles/requestManagement.css';
 const DonationRequest = () => {
   const [requests, setRequests] = useState([]);
 
-  
+  // Retrieve the access token from local storage
   const accessToken = localStorage.getItem('accessToken'); 
 
   useEffect(() => {
-    
+    // Ensure the token is available before making the request
     if (accessToken) {
       const fetchRequests = async () => {
         try {
@@ -20,7 +20,7 @@ const DonationRequest = () => {
           });
           if (response.ok) {
             const data = await response.json();
-            setRequests(data.requests);
+            setRequests(data); 
           } else {
             console.error("Failed to fetch donation requests:", response.statusText);
           }
@@ -45,7 +45,7 @@ const DonationRequest = () => {
 
       if (response.ok) {
         setRequests(requests.map(request =>
-          request.id === id ? { ...request, status: 'approved' } : request
+          request.request_id === id ? { ...request, status: 'approved' } : request
         ));
       } else {
         console.error("Failed to approve request:", response.statusText);
@@ -67,7 +67,7 @@ const DonationRequest = () => {
 
       if (response.ok) {
         setRequests(requests.map(request =>
-          request.id === id ? { ...request, status: 'rejected' } : request
+          request.request_id === id ? { ...request, status: 'rejected' } : request
         ));
       } else {
         console.error("Failed to reject request:", response.statusText);
@@ -84,28 +84,26 @@ const DonationRequest = () => {
       <table className="table table-striped table-hover">
         <thead className="table-dark">
           <tr>
-            <th>NGO</th>
-            <th>Amount</th>
-            <th>Reason</th>
-            <th>Category</th>
-            <th>Request Date</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Target Amount</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {requests.length > 0 ? (
             requests.map(request => (
-              <tr key={request.id}>
-                <td>{request.ngo}</td>
-                <td>{request.amount}</td>
-                <td>{request.reason}</td>
-                <td>{request.category}</td>
-                <td>{request.requestDate}</td>
+              <tr key={request.request_id}>
+                <td>{request.title}</td>
+                <td>{request.description}</td>
+                <td>{request.target_amount}</td>
+                <td>{request.status}</td>
                 <td>
                   {request.status === 'pending' ? (
                     <>
-                      <button className="btn btn-success btn-sm me-2" onClick={() => handleApprove(request.id)}>Approve</button>
-                      <button className="btn btn-danger btn-sm" onClick={() => handleReject(request.id)}>Reject</button>
+                      <button className="btn btn-success btn-sm me-2" onClick={() => handleApprove(request.request_id)}>Approve</button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleReject(request.request_id)}>Reject</button>
                     </>
                   ) : (
                     <span className={`badge bg-${request.status === 'approved' ? 'success' : 'danger'}`}>{request.status}</span>
@@ -115,7 +113,7 @@ const DonationRequest = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">No requests available</td>
+              <td colSpan="5" className="text-center">No requests available</td>
             </tr>
           )}
         </tbody>

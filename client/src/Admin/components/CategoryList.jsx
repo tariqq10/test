@@ -46,7 +46,7 @@ const CategoriesList = () => {
       </div>
       {filteredRequests.length > 0 ? (
         filteredRequests.map((category) => (
-          <CategoryItem key={category.id} {...category} />
+          <CategoryItem key={`${category.id}-${category.name}`} {...category} />  
         ))
       ) : (
         <p>No categories available on the backend</p>
