@@ -4,6 +4,9 @@ import './index.css'
 import App from './App.jsx'
 import 'font-awesome/css/font-awesome.min.css';
 import 'font-awesome/css/font-awesome.min.css';
+import {Provider} from 'react-redux'
+import {store} from './Donor/store.js'
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -11,6 +14,12 @@ import 'font-awesome/css/font-awesome.min.css';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </StrictMode>
+);
+    <Toaster position='top-right'/>
     <App />
   </StrictMode>,
 )
