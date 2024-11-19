@@ -19,5 +19,6 @@ const CategoryList = ({ categories }) => {
   );
 };
 
-export default CategoryList;
+export default CategoryList;  
 
+ 

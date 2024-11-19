@@ -82,4 +82,5 @@ const UserDetailsModal = ({ user, closeModal }) => {
   );
 };
 
-export default UserDetailsModal;
+export default UserDetailsModal;  
+

@@ -26,4 +26,4 @@ const UserRow = ({ user, onDelete }) => {
   );
 };
 
-export default UserRow;
+export default UserRow; 

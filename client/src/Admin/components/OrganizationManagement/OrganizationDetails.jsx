@@ -85,4 +85,4 @@ const OrganizationDetails = () => {
   );
 };
 
-export default OrganizationDetails;
+export default OrganizationDetails; 

@@ -55,4 +55,4 @@ const CategoriesList = () => {
   );
 };
 
-export default CategoriesList;
+export default CategoriesList; 

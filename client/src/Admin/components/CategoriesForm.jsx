@@ -80,4 +80,4 @@ const CategoriesForm = () => {
     );
 };
 
-export default CategoriesForm;
+export default CategoriesForm; 
