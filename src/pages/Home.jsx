@@ -1,18 +1,22 @@
-import React from "react"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Home = () => {
-  // Define the styles for the container and elements
+  const [requests, setRequests] = useState([]);
+  const [statusMessage, setStatusMessage] = useState("");
+
+  // Define the container and button styles as you've done before
   const containerStyle = {
-    backgroundColor: "#f8f8f8", // Light background for the page
+    backgroundColor: "#f8f8f8", // Light background
     fontFamily: "Arial, sans-serif", // Font family
     height: "100vh", // Full viewport height
-    display: "flex", // Use flexbox layout
+    display: "flex", // Flexbox layout
     flexDirection: "column", // Stack content vertically
     justifyContent: "flex-start", // Align content to the top
-    width: "100%", // Match the full width of the page, remove centering for a natural layout
-    maxWidth: "900px", // Prevent the container from becoming too wide
-    margin: "0 auto", // Center the container horizontally (if needed)
-    padding: "20px", // Add padding to the container to give some space from edges
+    width: "100%", // Full width
+    maxWidth: "900px", // Prevent too wide container
+    margin: "0 auto", // Center the container horizontally
+    padding: "20px", // Padding for spacing
   };
 
   const buttonStyle = {
@@ -20,63 +24,111 @@ const Home = () => {
     padding: "10px 15px",
     borderRadius: "5px",
     fontSize: "16px",
-    margin: "10px 0", // Adjust margin for vertical spacing
+    margin: "10px 0",
     cursor: "pointer",
-    width: "80%", // Make buttons stretch to 80% of container width
-    maxWidth: "300px", // Prevent buttons from becoming too wide
+    width: "80%",
+    maxWidth: "300px",
   };
 
-  // Style for each button
   const pendingStyle = { 
     ...buttonStyle, 
-    backgroundColor: "transparent", // Invisible background
-    border: "1px solid black", // Black border
-    color: "black", // Black font
+    backgroundColor: "transparent", 
+    border: "1px solid black", 
+    color: "black",
   };
 
   const approvedStyle = { 
     ...buttonStyle, 
-    backgroundColor: "transparent", // Invisible background
-    border: "1px solid lightgreen", // Light green border
-    color: "lightgreen", // Light green font
+    backgroundColor: "transparent", 
+    border: "1px solid lightgreen", 
+    color: "lightgreen", 
   };
 
   const rejectedStyle = { 
     ...buttonStyle, 
-    backgroundColor: "transparent", // Invisible background
-    border: "1px solid red", // Red border
-    color: "red", // Red font
+    backgroundColor: "transparent", 
+    border: "1px solid red", 
+    color: "red", 
   };
 
   const createRequestStyle = { 
     ...buttonStyle, 
-    background: "linear-gradient(to right, purple, indigo)", // Gradient purple background
-    color: "white", // White font
-    marginTop: "20px", // Add top margin to push it down a bit
+    background: "linear-gradient(to right, purple, indigo)", 
+    color: "white", 
+    marginTop: "20px",
   };
 
   const headerStyle = {
     fontSize: "20px",
     fontWeight: "bold",
     color: "#fff",
-    background: "linear-gradient(to right, purple, indigo)", // Gradient background for header
+    background: "linear-gradient(to right, purple, indigo)",
     padding: "8px 20px",
     borderRadius: "5px",
     marginBottom: "20px",
-    width: "100%", // Ensure header takes up full width of the container
+    width: "100%",
+  };
+
+  // Fetch requests when the component mounts
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/requests") // Replace with your backend URL
+      .then((response) => {
+        setRequests(response.data); // Set the data from the backend
+      })
+      .catch((error) => {
+        console.error("There was an error fetching requests:", error);
+        setStatusMessage("Error fetching data. Please try again later.");
+      });
+  }, []);
+
+  // Create a new request
+  const handleCreateRequest = () => {
+    const newRequest = {
+      category: "Food", // Example category (you can update this to be dynamic)
+      amount: 100, // Example amount (you can update this as well)
+    };
+
+    axios
+      .post("http://localhost:5000/api/requests", newRequest) // Replace with your backend URL
+      .then((response) => {
+        setRequests([...requests, response.data]); // Add the new request to the list
+        setStatusMessage("Request created successfully!");
+      })
+      .catch((error) => {
+        console.error("There was an error creating the request:", error);
+        setStatusMessage("Error creating the request. Please try again later.");
+      });
   };
 
   return (
     <div style={containerStyle}>
-      {/* Main content */}
       <h2 style={headerStyle}>My Requests</h2>
+      
+      {/* Display status message */}
+      {statusMessage && <p>{statusMessage}</p>}
+
       <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
-        <button style={pendingStyle}>Pending Request</button>
-        <button style={approvedStyle}>Approved Request</button>
-        <button style={rejectedStyle}>Rejected Request</button>
+        {requests.map((request) => (
+          <button
+            key={request.id}
+            style={
+              request.status === "pending"
+                ? pendingStyle
+                : request.status === "approved"
+                ? approvedStyle
+                : rejectedStyle
+            }
+          >
+            {request.status.charAt(0).toUpperCase() + request.status.slice(1)} Request - {request.category} - ${request.amount}
+          </button>
+        ))}
       </div>
+
       {/* Create Request Donation button */}
-      <button style={createRequestStyle}>Create Request Donation</button>
+      <button style={createRequestStyle} onClick={handleCreateRequest}>
+        Create Request Donation
+      </button>
     </div>
   );
 };
