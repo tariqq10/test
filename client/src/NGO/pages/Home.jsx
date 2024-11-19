@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   const [requests, setRequests] = useState([]);
@@ -103,6 +104,7 @@ const Home = () => {
 
   return (
     <div style={containerStyle}>
+      <Navbar/>
       <h2 style={headerStyle}>My Requests</h2>
       
       {/* Display status message */}
