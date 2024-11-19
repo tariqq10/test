@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from "../components/Navbar";
 
 const Profile = () => {
   // State for account settings form (e.g., to handle new email, phone, and password)
@@ -21,6 +22,8 @@ const Profile = () => {
 
   return (
     <div style={styles.profileContainer}>
+
+      <Navbar/>
       <h2>User Profile</h2>
 
       {/* Profile Summary Section */}
