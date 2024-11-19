@@ -1,4 +1,8 @@
-import React from 'react';
+console.log('Rendering Profile component');
+console.log('Profile Summary Section rendered');
+console.log('Donation History Section rendered');
+console.log('Account Settings form rendered');
+console.log('Donation Preferences section rendered');import React from 'react';
 import Navbar from '../components/Navbar';
 
 const Profile = () => {
