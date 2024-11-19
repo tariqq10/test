@@ -1,39 +1,47 @@
 /* sidebar.css */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px; /* Adjust width as needed */
-    height: 100vh;
-    background-color: #2a3b4c; /* Dark blue or another color */
-    color: white;
-    padding-top: 20px;
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar li {
-    margin: 20px 0;
-  }
-  
-  .sidebar a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    display: block;
-    padding: 10px 20px;
-    transition: background 0.3s;
-  }
-  
-  .sidebar a:hover {
-    background-color: #1a2b3c; /* Slightly darker shade on hover */
-  }
-  
-  .dashboard-main-content {
-    margin-left: 220px; /* Space for the sidebar */
-    padding: 20px;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px; 
+  height: 100vh;
+  background-color: #2a3b4c; 
+  color: white;
+  padding-top: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column; 
+}
+
+.sidebar li {
+  margin: 20px 0;
+}
+
+.sidebar a {
+  color: rgb(249, 249, 249);
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  padding: 10px 20px;
+  transition: background 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #B22E37; 
+}
+
+.dashboard-main-content {
+  margin-left: 220px; 
+  padding: 20px;
+}
+.icon_left {
+  margin-left: -30px; /* Adjust as needed */
+  color: #26939f;
+}
+.material-symbols-outlined {
+  margin-right: 5px; /* Space between icon and text */
+}

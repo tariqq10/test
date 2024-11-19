@@ -15,6 +15,7 @@ from Resources.request import DonationRequestResource
 from Resources.donations import DonationResource
 from Resources.approval import DonationApprovalResource, ApprovedDonationResource
 from Resources.report import ReportResource
+from Resources.mpesa import GetAccessToken
 
 
 
@@ -52,6 +53,10 @@ api.add_resource(DonationApprovalResource, '/approvals', '/approvals/<int:reques
 api.add_resource(ApprovedDonationResource, '/approved')#Donors can view all the approved donation requests
 api.add_resource(ReportResource, '/reports')#admin can view all the donations/pending and approaved donation requests
 api.add_resource(ReportResource, '/reports/user/<int:user_id>', endpoint="user_donations")
+# Register resources
+api.add_resource(GetAccessToken, '/access_token')  # Assuming GetAccessToken class is defined correctly
+# Register STK push class as a resource
+
 
 
 

@@ -41,10 +41,6 @@
     transform: rotateY(0deg);
   }
   
-  /* .card-back {
-    transform: rotateY(180deg);
-  } */
-  
   .center-wrap {
     width: 100%;
     text-align: center;
@@ -62,6 +58,15 @@
     margin: 10px 0;
     border-radius: 5px;
     border: 1px solid #ddd;
+  }
+
+  select{
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+
   }
   
   button {

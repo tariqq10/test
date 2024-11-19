@@ -11,7 +11,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #772222;
   border-radius: 10px;
   padding: 40px;
 }
@@ -39,7 +39,7 @@
 .find-donations-button,
 .support-charities-button {
   padding: 10px 20px;
-  background-color: #646cff;
+  background-color: #772222;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -52,7 +52,7 @@
 
 .find-donations-button:hover,
 .support-charities-button:hover {
-  background-color: #535bf2;
+  background-color: #0e0d0d;
 }
 
 .image-content {

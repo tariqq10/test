@@ -1,40 +1,88 @@
-import { useState } from "react"
-import AdminNavBar from "../components/AdminNavBar"
-
-const requests = [
-  {
-    id: "1",
-    ngo: "NGO-a",
-    amount: 3000,
-    reason: "Sending kids to school",
-    category: "Education",
-    requestDate: "10/05/2023",
-  },
-  {
-    id: "2",
-    ngo: "NGO-b",
-    amount: 1000,
-    reason: "Medical supply",
-    category: "Healthcare",
-    requestDate: "05/03/2024",
-  },
-];
+import React, { useEffect, useState } from "react";
+import AdminNavBar from "../components/AdminNavBar";
+import '../styles/requestManagement.css';
 
 const DonationRequest = () => {
-    const [filteredRequests, setFilteredRequests] = useState(requests)
+  const [requests, setRequests] = useState([]);
 
+  
+  const accessToken = localStorage.getItem('accessToken'); 
 
+  useEffect(() => {
+    
+    if (accessToken) {
+      const fetchRequests = async () => {
+        try {
+          const response = await fetch('http://127.0.0.1:5000/requests', {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setRequests(data.requests);
+          } else {
+            console.error("Failed to fetch donation requests:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error fetching requests:", error);
+        }
+      };
+      fetchRequests();
+    } else {
+      console.error("No access token found.");
+    }
+  }, [accessToken]);
 
-    const handleAction = (id, action) => {
-        alert (`You clicked ${action}`);
-    };
+  const handleApprove = async (id) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/approvals/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
 
-    return (
+      if (response.ok) {
+        setRequests(requests.map(request =>
+          request.id === id ? { ...request, status: 'approved' } : request
+        ));
+      } else {
+        console.error("Failed to approve request:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error approving request:", error);
+    }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/approvals/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ status: 'rejected' }), 
+      });
+
+      if (response.ok) {
+        setRequests(requests.map(request =>
+          request.id === id ? { ...request, status: 'rejected' } : request
+        ));
+      } else {
+        console.error("Failed to reject request:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  return (
     <div className="dashboard-main-content">
       <AdminNavBar />
       <h2>Pending Donation Requests</h2>
-      <table>
-        <thead>
+      <table className="table table-striped table-hover">
+        <thead className="table-dark">
           <tr>
             <th>NGO</th>
             <th>Amount</th>
@@ -45,26 +93,35 @@ const DonationRequest = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredRequests.map((request) => (
-            <tr key={request.id}>
-              <td>{request.ngo}</td>
-              <td>{request.amount}</td>
-              <td>{request.reason}</td>
-              <td>{request.category}</td>
-              <td>{request.requestDate}</td>
-              <td>
-                <button onClick={() => handleAction(request.id, "Approve")}>
-                  Approve
-                </button>
-                <button onClick={() => handleAction(request.id, "Reject")}>
-                  Reject
-                </button>
-              </td>
+          {requests.length > 0 ? (
+            requests.map(request => (
+              <tr key={request.id}>
+                <td>{request.ngo}</td>
+                <td>{request.amount}</td>
+                <td>{request.reason}</td>
+                <td>{request.category}</td>
+                <td>{request.requestDate}</td>
+                <td>
+                  {request.status === 'pending' ? (
+                    <>
+                      <button className="btn btn-success btn-sm me-2" onClick={() => handleApprove(request.id)}>Approve</button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleReject(request.id)}>Reject</button>
+                    </>
+                  ) : (
+                    <span className={`badge bg-${request.status === 'approved' ? 'success' : 'danger'}`}>{request.status}</span>
+                  )}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="text-center">No requests available</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
   );
 };
-export default DonationRequest
+
+export default DonationRequest;
