@@ -27,6 +27,9 @@ import OrganizationList from './Admin/components/OrganizationManagement/Organiza
 import DonorHome from './Donor/components/home';
 import DonationPage from './Donor/components/DonationPage';
 import DonorProfile from './Donor/components/profile';
+import DonorHome from './Donor/components/home';
+import DonationPage from './Donor/components/DonationPage';
+// import DonorProfile from './Donor/components/profile';
 
 const App = () => {
 
@@ -65,6 +68,8 @@ const App = () => {
           <Route path="/make-donation" element={<DonationPage/>} />
           <Route path="/donor-profile" element={<DonorProfile/>}/>
           
+          {/* <Route path="/donor-profile" element={<DonorProfile/>}/> */}
+          {/* New route */}
         </Routes>
       </div>
     </Router>
