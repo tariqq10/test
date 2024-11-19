@@ -15,12 +15,12 @@ const NewDonationForm = () => {
 
   useEffect(() => {
     axios
-      .get("/categories")
+      .get("http://127.0.0.1:5000/categories")
       .then((res) => {
-        if (Array.isArray(res.data)){
-          setCategories(res.data)
+        if (Array.isArray(res.data)) {
+          setCategories(res.data);
         } else {
-          console.error("Error", error)
+          console.error("Error", error);
         }
       })
       .catch((error) => {
@@ -42,18 +42,19 @@ const NewDonationForm = () => {
       category_id: "",
     },
     onSubmit: async(values) => {
-      axios.post('/requests', values, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-        console.log('Donation request created successfully', res.data)
-        navigate("/make-donation")
-      })
-      .catch((error) => {
-        console.error('Error', error)
-      })
+      axios
+        .post("http://127.0.0.1:5000/requests", values, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log("Donation request created successfully", res.data);
+          navigate("/make-donation");
+        })
+        .catch((error) => {
+          console.error("Error", error);
+        });
     }
   })
   

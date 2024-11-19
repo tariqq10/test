@@ -10,4 +10,4 @@ const CategoryItem = ({name, description, created_at}) => {
     )
     
 }
-export default CategoryItem
+export default CategoryItem 
