@@ -6,7 +6,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 10vh;
   background-color: #f4f4f9;
   padding: 20px;
 }
@@ -43,15 +43,15 @@ input[type="text"]:focus,
 input[type="number"]:focus,
 select:focus {
   outline: none;
-  border-color: #f39c12;
+  border-color: #772222;
 }
 
 button {
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  background-color: #f39c12;
-  color: white;
+  background-color: #772222;
+  color: black;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -59,7 +59,7 @@ button {
 }
 
 button:hover {
-  background-color: #e67e22;
+  background-color: #772222;
 }
 
 /* Error message styling */
