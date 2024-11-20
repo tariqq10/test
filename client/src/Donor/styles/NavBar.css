@@ -1,76 +1,66 @@
-/* NGO Card Container */
-.ngo-card {
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  max-width: 300px; /* Limit max width */
-  width: 100%; /* Make it responsive */
-  text-align: center;
-  font-family: Arial, sans-serif;
+/* NavBar.css */
+
+.navbar {
+  background-color: #652f2f; /* Red background for navbar */
+  padding: 10px 20px; /* Padding for spacing */
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  height: 50px;
 }
 
-.ngo-card:hover {
-  transform: translateY(-5px); /* Hover effect: slight raise */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* More intense shadow on hover */
+/* Logo or Brand Name (optional) */
+.navbar .brand {
+  color: white; /* White text color for the brand */
+  font-size: 24px; /* Larger font for brand */
+  font-weight: bold; /* Bold text for the brand */
+  text-decoration: none; /* Remove underline */
 }
 
-.ngo-card h3 {
-  font-size: 22px;
-  margin-bottom: 10px;
-  color: #333;
-  font-weight: bold;
+/* Navigation links container */
+.nav-links {
+  display: flex; /* Flexbox for horizontal layout */
+  gap: 20px; /* Space between links */
 }
 
-.ngo-card p {
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #555;
+/* Individual link styles */
+.nav-link {
+  /* color: #ffffff; White text color */
+  text-decoration: none; /* Remove underline */
+  font-size: 16px; /* Font size for links */
+  padding: 8px 12px; /* Padding for links */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, color 0.3s; /* Transition for hover effects */
 }
 
-/* Total Donations styling */
-.ngo-card p.total-donations {
-  font-size: 18px;
-  color: #f39c12; /* Yellowish color for emphasis */
-  font-weight: bold;
+/* Hover effect for links */
+.nav-link:hover {
+  background-color: #ffffff; /* White background on hover */
+  color: #ff0000; /* Red text color on hover */
 }
 
-/* Button Styling */
-.ngo-card button {
-  background-color: #f1c40f;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  margin-top: 15px;
+/* Active link styling */
+.nav-link.active {
+  background-color: #ffffff; /* White background for active link */
+  color: #ff0000; /* Red text for active link */
+  font-weight: bold; /* Bold text for active link */
 }
 
-.ngo-card button:hover {
-  background-color: #e67e22; /* Darker color when hovering */
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-  .ngo-card {
-    padding: 15px;
-    margin-bottom: 15px;
-    width: 100%;
+/* Responsive styles */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Stack items vertically on small screens */
+    align-items: flex-start; /* Align items to the start */
+    padding: 10px; /* Adjust padding for smaller screens */
   }
 
-  .ngo-card h3 {
-    font-size: 20px;
+  .nav-links {
+    flex-direction: column; /* Stack links vertically */
+    gap: 10px; /* Reduce space between links */
   }
 
-  .ngo-card p {
-    font-size: 14px;
-  }
-
-  .ngo-card button {
-    width: 100%;
+  .nav-link {
+    font-size: 14px; /* Slightly smaller font for mobile */
   }
 }
