@@ -4,10 +4,14 @@ import Footer from "./Footer";
 import "../styles/home.css";
 import { useDispatch, useSelector } from "react-redux";
 import donationSlice, { fetchApprovedDonations } from "../slices/donationSlice";
+import DonationPage from "./DonationPage";
 
 const Requests= () => {
   const dispatch = useDispatch();
   const {approvedDonations, status, error} = useSelector((state) => state.donations);
+  const [selectedDonation, setSelectedDonation] = useState(null)
+
+
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -24,6 +28,10 @@ const Requests= () => {
     return <div>Error: {error}</div>
   }
 
+  const handleClick = (donationRequest) => {
+    setSelectedDonation(donationRequest)
+  }
+
   return (
     <div className="home">
       <NavBar isHome={true} />
@@ -37,6 +45,7 @@ const Requests= () => {
                 <h3>{donation.title}</h3>
                 <p>{donation.description}</p>
                 <p><strong>Category:</strong>{donation.category}</p>
+                <button onClick={() => handleClick(donation)}>Donate</button>
               </div>
         ))}
         </div>
@@ -47,6 +56,12 @@ const Requests= () => {
 
       {/* Footer */}
       <Footer />
+      {selectedDonation && (
+        <DonationPage
+        donationRequest = {selectedDonation}
+        onClose={() => setSelectedDonation(null)}
+        />
+      )}
     </div>
   );
 };

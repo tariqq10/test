@@ -65,6 +65,7 @@ const App = () => {
           <Route path="/logout" element={<Logout/>} />
           <Route path='/donor' element={<DonorHome/>}/>
           <Route path="/requests" element={<Requests/>}/>
+          <Route path="/category" />
           <Route path="/make-donation" element={<DonationPage/>} />
           <Route path="/donor-profile" element={<DonorProfile/>}/>
           
