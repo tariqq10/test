@@ -102,6 +102,7 @@ const Auth = () => {
             <div className="center-wrap">
               <h4>Register</h4>
               <form onSubmit={formik.handleSubmit}>
+                
                 <select
                   type="text"
                   name="role"

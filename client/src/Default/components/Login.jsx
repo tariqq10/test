@@ -18,7 +18,7 @@ const Login = () => {
       password: "",
     },
     onSubmit: async (values) => {
-      console.log('Form submitted', values)
+      // console.log('Form submitted', values)
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
         method: "POST",
         headers: {
@@ -48,7 +48,10 @@ const Login = () => {
           toast.error("Invalid Email/Password")
         }
 
-      } 
+      } else {
+        console.log("Error message:",data.message)
+        toast.error(data.message)
+      }
     }
   })
 

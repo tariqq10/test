@@ -3,48 +3,84 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 import NgoCard from "./NgoCard"; // Assuming NgoCard is already styled
 import "../styles/home.css";
-import { useDispatch, useSelector } from "react-redux";
-import donationSlice, { fetchApprovedDonations } from "../slices/donationSlice";
 
-const DonorHome = () => {
-  const dispatch = useDispatch();
-  const {approvedDonations, status, error} = useSelector((state) => state.donations);
-  const token = localStorage.getItem('token')
+const Home = () => {
+  const [ngos, setNgos] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loadingNgos, setLoadingNgos] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
+  // Fetching categories from the backend
   useEffect(() => {
-    if (token) {
-      dispatch(fetchApprovedDonations(token))
-    }
-  }, [dispatch, token]);
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/categories/<int:id>");
+        const data = await response.json();
+        setCategories(data); // Assuming this is an array of categories
+      } catch (error) {
+        setErrorMessage("Error fetching categories");
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
 
-  if (status === 'loading'){
-    return <div>Loading...</div>
-  }
+    fetchCategories();
+  }, []);
 
-  if (status === 'failed'){
-    return <div>Error: {error}</div>
-  }
+  // Fetching NGOs from the backend
+  useEffect(() => {
+    const fetchNgos = async () => {
+      try {
+        const response = await fetch("/approved");
+        const data = await response.json();
+
+        // Only show NGOs with approved status
+        const approvedNgos = data.filter((ngo) => ngo.status === "approved");
+
+        // Sort NGOs by category_id (if we want to sort by category_id)
+        const sortedNgos = approvedNgos.sort(
+          (a, b) => a.category_id - b.category_id
+        );
+
+        setNgos(sortedNgos);
+      } catch (error) {
+        setErrorMessage("Error fetching NGOs");
+      } finally {
+        setLoadingNgos(false);
+      }
+    };
+
+    fetchNgos();
+  }, []);
+
+  // Helper function to get category name by id
+  const getCategoryName = (categoryId) => {
+    const category = categories.find((cat) => cat.category_id === categoryId);
+    return category ? category.name : "Unknown Category";
+  };
 
   return (
     <div className="home">
       <NavBar isHome={true} />
+      {errorMessage && <p className="error">{errorMessage}</p>}
 
+      {/* NGO Cards */}
       <div className="ngo-cards">
-        <h2>Approved donation requests</h2>
-        {approvedDonations.length > 0 ? (
-          <div>
-            {approvedDonations.map((donation) => (
-              <div key={donation.request_id}>
-                <h3>{donation.title}</h3>
-                <p>{donation.description}</p>
-                <p><strong>Category:</strong>{donation.category}</p>
-              </div>
-        ))}
-        </div>
-  ) : (
-    <p>No approved donations found</p>
-  )}
-  </div>
+        <h2>Our Approved NGOs</h2>
+        {loadingNgos || loadingCategories ? (
+          <p>Loading...</p>
+        ) : ngos.length > 0 ? (
+          ngos.map((ngo) => (
+            <NgoCard
+              key={ngo.ngo_id}
+              ngo={{ ...ngo, category_name: getCategoryName(ngo.category_id) }}
+            />
+          ))
+        ) : (
+          <p>No approved NGOs available.</p>
+        )}
+      </div>
 
       {/* Footer */}
       <Footer />
@@ -52,4 +88,4 @@ const DonorHome = () => {
   );
 };
 
-export default DonorHome;
+export default Home;
