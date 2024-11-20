@@ -54,4 +54,4 @@ const OrganizationItem = ({ organization, deleteOrganization, updateOrganization
   );
 };
 
-export default OrganizationItem;
+export default OrganizationItem; 

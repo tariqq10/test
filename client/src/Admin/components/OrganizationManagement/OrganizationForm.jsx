@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const OrganizationForm = () => {
+const OrganizationForm = ({ organization, setOrganization, createOrganization }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [organization, setOrganization] = useState({
+  const [orgData, setOrgData] = useState(organization || {
     name: '',
     contactInfo: '',
     address: '',
@@ -19,7 +19,6 @@ const OrganizationForm = () => {
     return null; 
   }
 
-  
   const headers = {
     Authorization: `Bearer ${token}`, 
   };
@@ -29,7 +28,7 @@ const OrganizationForm = () => {
       const fetchOrganization = async () => {
         try {
           const response = await axios.get(`http://127.0.0.1:5000/organizations/${id}`, { headers });
-          setOrganization(response.data);
+          setOrgData(response.data);
         } catch (error) {
           console.error('Error fetching organization:', error);
         }
@@ -40,7 +39,7 @@ const OrganizationForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setOrganization((prevOrg) => ({
+    setOrgData((prevOrg) => ({
       ...prevOrg,
       [name]: value,
     }));
@@ -48,14 +47,11 @@ const OrganizationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (id) {
-        
-        await axios.patch(`http://127.0.0.1:5000/organizations/${id}`, organization, { headers });
+        await axios.patch(`http://127.0.0.1:5000/organizations/${id}`, orgData, { headers });
       } else {
-        
-        await axios.post('http://127.0.0.1:5000/organizations', organization, { headers });
+        await axios.post('http://127.0.0.1:5000/organizations', orgData, { headers });
       }
       navigate('/admin/organizations'); 
     } catch (error) {
@@ -70,7 +66,7 @@ const OrganizationForm = () => {
         <input
           type="text"
           name="name"
-          value={organization.name}
+          value={orgData.name}
           onChange={handleInputChange}
         />
       </div>
@@ -79,7 +75,7 @@ const OrganizationForm = () => {
         <input
           type="text"
           name="contactInfo"
-          value={organization.contactInfo}
+          value={orgData.contactInfo}
           onChange={handleInputChange}
         />
       </div>
@@ -88,7 +84,7 @@ const OrganizationForm = () => {
         <input
           type="text"
           name="address"
-          value={organization.address}
+          value={orgData.address}
           onChange={handleInputChange}
         />
       </div>
@@ -97,4 +93,4 @@ const OrganizationForm = () => {
   );
 };
 
-export default OrganizationForm;
+export default OrganizationForm; 
