@@ -1,0 +1,79 @@
+/* home.css */
+
+/* General body styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif; /* Use a clean font */
+  background-color: #ffffff; /* White background */
+  color: #333; /* Dark gray text for readability */
+}
+
+/* Home component styling */
+.home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the home component takes full height */
+}
+
+/* Navigation Bar styles */
+.navbar {
+  background-color: #ff0000; /* Red background for the navbar */
+  color: #ffffff; /* White text color */
+  padding: 15px 20px; /* Padding for the navbar */
+  text-align: center; /* Center text */
+}
+
+/* Error message styling */
+.error {
+  color: #ff0000; /* Red color for error messages */
+  text-align: center; /* Center the error message */
+  margin: 20px 0; /* Space around the error message */
+}
+
+/* NGO Cards container */
+.ngo-cards {
+  flex: 1; /* Allow this section to grow and fill available space */
+  padding: 20px; /* Padding around the NGO cards container */
+  max-width: 1200px; /* Max width to prevent stretching on large screens */
+  margin: 0 auto; /* Center the container */
+}
+
+/* Header for NGO cards */
+.ngo-cards h2 {
+  text-align: center; /* Center the header */
+  color: #ff0000; /* Red color for the header */
+}
+
+/* Styling for individual NGO cards */
+.ngo-card {
+  background-color: #ffffff; /* White background for each card */
+  border: 1px solid #ff0000; /* Red border for cards */
+  border-radius: 5px; /* Rounded corners */
+  padding: 15px; /* Padding inside cards */
+  margin: 10px 0; /* Space between cards */
+  transition: transform 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for NGO cards */
+.ngo-card:hover {
+  transform: scale(1.05); /* Slightly enlarge the card on hover */
+}
+
+/* Footer styling */
+.footer {
+  background-color: #ff0000; /* Red background for the footer */
+  color: #ffffff; /* White text color */
+  text-align: center; /* Center text */
+  padding: 15px 0; /* Padding for the footer */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .ngo-cards {
+    padding: 10px; /* Less padding on smaller screens */
+  }
+
+  .ngo-card {
+    padding: 10px; /* Less padding inside cards */
+  }
+}
