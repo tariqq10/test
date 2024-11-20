@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import NgoCard from "./NgoCard"; // Assuming NgoCard is already styled
-import "./assets/styles/home.css";
+import "../styles/home.css";
 
 const Home = () => {
   const [ngos, setNgos] = useState([]);

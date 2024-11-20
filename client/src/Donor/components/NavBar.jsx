@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import "./assets/styles/NavBar.css";
+import "../styles/NavBar.css";
+import Logout from "./logout";
 
 const NavBar = () => {
   // Using useLocation to check current route for conditional styling if needed
@@ -9,31 +10,30 @@ const NavBar = () => {
   return (
     <nav className="navbar">
       <div className="nav-links">
-        <Link
-          to="/home"
-          className={`nav-link ${
-            location.pathname === "/home" ? "active" : ""
-          }`}
-        >
-          Home
-        </Link>
-        <Link
-          to="/make-donation"
-          className={`nav-link ${
-            location.pathname === "/make-donation" ? "active" : ""
-          }`}
-        >
-          Make a Donation
-        </Link>
-        <Link
-          to="/donor-profile"
-          className={`nav-link ${
-            location.pathname === "/donor-profile" ? "active" : ""
-          }`}
-        >
-          Donor Profile
-        </Link>
-      </div>
+
+        <ul>
+          <li><Link to="/donor" className="nav-link">
+            Home
+          </Link>
+          </li>
+          <li>
+            <Link to="/donor-category" className="nav-link">
+            Category
+            </Link>
+          </li>
+          <li>
+          <Link to="/requests" className="nav-link">Donation request</Link>
+          </li>
+          {/* Add Make a Donation link */}
+          <li>
+          <Link to="/donor-profile" className="nav-link">
+            Profile
+          </Link>
+          </li>
+          <li><Logout/></li>
+        </ul>
+        </div>
+        
     </nav>
   );
 };

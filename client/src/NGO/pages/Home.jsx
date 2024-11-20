@@ -17,7 +17,7 @@ const Home = () => {
     width: "100%", // Full width
     maxWidth: "900px", // Prevent too wide container
     margin: "0 auto", // Center the container horizontally
-    padding: "20px", // Padding for spacing
+    padding: "100px", // Padding for spacing
   };
 
   const buttonStyle = {

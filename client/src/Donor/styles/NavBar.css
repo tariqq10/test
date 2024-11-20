@@ -1,12 +1,13 @@
 /* NavBar.css */
 
 .navbar {
-  background-color: #ff0000; /* Red background for navbar */
+  background-color: #652f2f; /* Red background for navbar */
   padding: 10px 20px; /* Padding for spacing */
   display: flex; /* Flexbox for layout */
   justify-content: space-between; /* Space between items */
   align-items: center; /* Center items vertically */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  height: 50px;
 }
 
 /* Logo or Brand Name (optional) */
@@ -25,7 +26,7 @@
 
 /* Individual link styles */
 .nav-link {
-  color: #ffffff; /* White text color */
+  /* color: #ffffff; White text color */
   text-decoration: none; /* Remove underline */
   font-size: 16px; /* Font size for links */
   padding: 8px 12px; /* Padding for links */

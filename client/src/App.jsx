@@ -28,6 +28,8 @@ import DonorHome from './Donor/components/home';
 import DonationPage from './Donor/components/DonationPage';
 import DonorProfile from './Donor/components/profile';
 import Requests from './Donor/components/donationRequest';
+import CategoriesList from './Admin/components/CategoryList';
+import DonorCategory from './Donor/components/Category';
 // import DonorProfile from './Donor/components/profile';
 
 const App = () => {
@@ -65,8 +67,10 @@ const App = () => {
           <Route path="/logout" element={<Logout/>} />
           <Route path='/donor' element={<DonorHome/>}/>
           <Route path="/requests" element={<Requests/>}/>
+          <Route path="/category" />
           <Route path="/make-donation" element={<DonationPage/>} />
           <Route path="/donor-profile" element={<DonorProfile/>}/>
+          <Route path="donor-category" element={<DonorCategory/>}/>
           
           {/* <Route path="/donor-profile" element={<DonorProfile/>}/> */}
           {/* New route */}
