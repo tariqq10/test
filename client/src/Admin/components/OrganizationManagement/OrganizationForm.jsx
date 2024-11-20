@@ -15,7 +15,6 @@ const OrganizationForm = () => {
 
   useEffect(() => {
     if (organization_id) {
-      
       const fetchOrganization = async () => {
         try {
           const response = await axios.get(
@@ -42,14 +41,10 @@ const OrganizationForm = () => {
     e.preventDefault();
     try {
       if (organization_id) {
-        
         await axios.patch(
           `http://127.0.0.1:5000/organizations/${organization_id}`,
           orgData
         );
-      } else {
-        
-        await axios.post('http://127.0.0.1:5000/organizations', orgData);
       }
       navigate('/admin/organizations'); 
     } catch (error) {
