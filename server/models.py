@@ -48,6 +48,7 @@ class Organizations(db.Model, SerializerMixin):
 
 
 
+
 class Donation_request(db.Model, SerializerMixin):
     __tablename__ = 'donation_requests'
     

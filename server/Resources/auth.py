@@ -98,6 +98,27 @@ class UserResource(Resource):
             'message': 'User created successfully'
         }, 201
         
+        
+    @jwt_required()
+    @admin_required
+    def get(self, user_id=None):
+        
+        if user_id:
+            #Fetch a specific user by ID
+            user = Users.query.filter_by(user_id=user_id).first()
+            
+            if user is None:
+                return {'message': 'User not found'}, 404
+            return user.to_dict(), 200  
+        
+        
+        users = Users.query.all()
+        
+        if not users:
+            return {'message': 'No users found'}, 404
+        return [user.to_dict() for user in users], 200
+        
+        
     @admin_required  # ensure that only admins can delete users
     @jwt_required()
     def delete(self, user_id):

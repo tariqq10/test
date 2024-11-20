@@ -3,7 +3,7 @@ from models import Donations, Donation_request, Users, db
 from flask import request
 from Resources.roles import donor_required, ngo_required
 from flask_jwt_extended import get_jwt_identity, jwt_required
-
+from Resources.stkpush import initiate_stk_push
 class DonationResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('amount', type=float, default=0.00, help='Amount is required for donation')
@@ -81,7 +81,7 @@ class DonationResource(Resource):
         # Retrieve the user ID from the JWT token
         user_id = get_jwt_identity()
 
-        # Get donation_request_id and category_id from the JSON body (e.g., selected by user in frontend)
+        # Get donation_request_id from the JSON body
         request_data = request.get_json()
         donation_request_id = request_data.get('donation_request_id')
         
@@ -96,8 +96,21 @@ class DonationResource(Resource):
         
         # Set category_id from the donation_request object
         category_id = donation_request.category_id
+        
+        # Fetch the donor's phone number
+        user = Users.query.filter_by(user_id=user_id).first()
+        if user is None or not user.phone:
+            return {"message": "Donor's phone number not found. Please update your profile with a valid phone number"}, 400
+        phone = user.phone
+        
+        # #fetch the NGO's phone number through the organization model
+        # organization_id = donation_request.organization_id
+        # ngo_user = Users.query.filter_by(organization_id=organization_id).first()
+        # if ngo_user is None or not ngo_user.phone:
+        #     return {"message": "NGO's phone number nor found.Please contact the organization for support"}, 400
+        # ngo_phone = ngo_user.phone
 
-        # Create the new donation entry with the assigned fields
+        # Create the new donation entry
         donation = Donations(
             amount=amount,
             user_id=user_id,
@@ -109,11 +122,45 @@ class DonationResource(Resource):
             # Save the donation to the database
             db.session.add(donation)
             db.session.commit()
-            return {"message": "Donation saved successfully", "donation": donation.to_dict()}, 201
+
+            try:
+                # Prepare the STK Push request parameters
+                account_reference = donation_request.title
+                transaction_desc = "Donation"
+                
+                # Initiate STK push and get response
+                stk_response, status_code = initiate_stk_push(amount, phone, account_reference, transaction_desc)
+                
+                if status_code == 200:
+                    return {
+                        "message": "Donation successful. STK Push initiated",
+                        "donation": donation.to_dict(),
+                        "stk_details": stk_response
+                    }, 201
+                else:
+                    # If STK Push fails but we want to keep the donation record
+                    return {
+                        "message": "Donation recorded, but STK Push failed",
+                        "donation": donation.to_dict(),
+                        "stk_error": stk_response
+                    }, status_code
+
+            except Exception as e:
+                # Log the actual error for debugging
+                print(f"STK Push error: {str(e)}")
+                
+                # Keep the donation record but return error about STK push
+                return {
+                    "message": "Donation saved, but M-Pesa STK Push failed.",
+                    "error": str(e),
+                    "donation": donation.to_dict()
+                }, 500
 
         except Exception as e:
+            # Rollback donation if saving to DB fails
             db.session.rollback()
             return {"message": "Error creating the donation", "error": str(e)}, 500
+
 
 
     @donor_required 
