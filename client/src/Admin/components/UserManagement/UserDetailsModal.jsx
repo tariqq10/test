@@ -26,14 +26,15 @@ const UserDetailsModal = ({ user, closeModal }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update user');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update user');
       }
 
       closeModal();
       alert('User updated successfully!');
     } catch (error) {
       console.error('Error updating user:', error);
-      alert('Failed to update user. Please try again.');
+      alert(`Failed to update user: ${error.message}`);
     }
   };
 
@@ -46,7 +47,7 @@ const UserDetailsModal = ({ user, closeModal }) => {
           <input
             type="text"
             name="username"
-            value={updatedUser.username}
+            value={updatedUser.username || ''}
             onChange={handleInputChange}
           />
         </label>
@@ -55,7 +56,7 @@ const UserDetailsModal = ({ user, closeModal }) => {
           <input
             type="text"
             name="last_name"
-            value={updatedUser.last_name}
+            value={updatedUser.last_name || ''}
             onChange={handleInputChange}
           />
         </label>
@@ -64,15 +65,16 @@ const UserDetailsModal = ({ user, closeModal }) => {
           <input
             type="email"
             name="email"
-            value={updatedUser.email}
+            value={updatedUser.email || ''}
             onChange={handleInputChange}
           />
         </label>
         <label>
           Role:
-          <select name="role" value={updatedUser.role} onChange={handleInputChange}>
+          <select name="role" value={updatedUser.role || ''} onChange={handleInputChange}>
             <option value="admin">Admin</option>
             <option value="user">User</option>
+            <option value="ngo">NGO</option>
           </select>
         </label>
         <button onClick={handleUpdate}>Save Changes</button>
@@ -82,5 +84,4 @@ const UserDetailsModal = ({ user, closeModal }) => {
   );
 };
 
-export default UserDetailsModal;  
-
+export default UserDetailsModal;
